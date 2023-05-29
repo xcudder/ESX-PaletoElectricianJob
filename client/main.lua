@@ -68,8 +68,21 @@ Citizen.CreateThread(function()
 		local A = GetEntityCoords(GetPlayerPed(-1), false)
 		local B = GetEntityCoords(master_electrictian, false)
 		if Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < 1.5 then
-			-- TO DO
-			DisplayHelpText("Press ~INPUT_CONTEXT~ to start/stop the job")
+			if PlayerData.job and PlayerData.job.name ~= 'electrician' then
+				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
+
+				if(IsControlJustReleased(1, 38))then
+					TriggerServerEvent('toggleJob:electricianJob', true)
+					putUniformOn()
+				end
+			else
+				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
+
+				if(IsControlJustReleased(1, 38))then
+					TriggerServerEvent('toggleJob:electricianJob', false)
+					getOutOfUniform()
+				end
+			end
 		end
 	end
 end)
@@ -79,17 +92,19 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
 
-		local player_position = GetEntityCoords(GetPlayerPed(-1), false)
-		local work_player_distance = Vdist(random_work_position.x, random_work_position.y, random_work_position.z, player_position.x, player_position.y, player_position.z)
+		if PlayerData.job and PlayerData.job.name == 'electrician' then
+			local player_position = GetEntityCoords(GetPlayerPed(-1), false)
+			local work_player_distance = Vdist(random_work_position.x, random_work_position.y, random_work_position.z, player_position.x, player_position.y, player_position.z)
 
-		DrawMarker(1, random_work_position.x, random_work_position.y, random_work_position.z,0, 0, 0, 0, 0, 0, 1.0, 1.0, 1.0, 255, 255, 255, 155, 0, 0, 2, 0, 0, 0, 0)
-		
-		if work_player_distance < 1.5 then			
-			if isWorking == false then
-				DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
+			DrawMarker(1, random_work_position.x, random_work_position.y, random_work_position.z,0, 0, 0, 0, 0, 0, 1.0, 1.0, 1.0, 255, 255, 255, 155, 0, 0, 2, 0, 0, 0, 0)
 
-				if(IsControlJustReleased(1, 38)) then
-					working()
+			if work_player_distance < 1.5 then
+				if isWorking == false then
+					DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
+
+					if(IsControlJustReleased(1, 38)) then
+						working()
+					end
 				end
 			end
 		end
@@ -127,8 +142,8 @@ function working()
 		TriggerServerEvent("addItems:electricianJob")
         random_work_position = Config.WorkPoints[math.random(#Config.WorkPoints)]
         TriggerEvent('notifications', "#29c501", "Electrician", "You've got 2 bucks")
+    	isWorking = false
     end)
-    isWorking = false
 end
 
 function DisplayHelpText(str)

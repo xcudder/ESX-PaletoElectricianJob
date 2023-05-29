@@ -9,9 +9,10 @@ Config.WorkPoints = {
 
 Config.Clothes = {
     male = {
-        ['tshirt_1'] = 0,  ['tshirt_2'] = 0,
-        ['torso_1'] = 122,   ['torso_2'] = 0,
-        ['arms'] = 1,  ['pants_1'] = 5,
+        ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+        ['torso_1'] = 65,   ['torso_2'] = 3,
+        ['pants_1'] = 38, ['pants_2'] = 3,
+        ['shoes_1'] = 51
     },
     female = {
         ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
