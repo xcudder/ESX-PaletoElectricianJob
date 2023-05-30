@@ -2,7 +2,7 @@ fx_version 'adamant'
 
 game 'gta5'
 
-description 'PaletoElectricianJob'
+description 'PaletoWorks'
 
 server_scripts {
 	'server/main.lua',
@@ -11,5 +11,6 @@ server_scripts {
 
 client_scripts {
 	'config.lua',
-	'client/main.lua'
+	'client/electrician.lua',
+	'client/factory_helper.lua'
 }

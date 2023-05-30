@@ -1,20 +1,20 @@
 ESX = exports["es_extended"]:getSharedObject()
 
-RegisterNetEvent("addItems:electricianJob")
-AddEventHandler("addItems:electricianJob", function()
+RegisterNetEvent("giveReward:paletoWorks")
+AddEventHandler("giveReward:paletoWorks", function(reward)
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
-    xPlayer.addAccountMoney('bank', 2)
+    xPlayer.addAccountMoney('money', reward)
 end)
 
 
-RegisterNetEvent('toggleJob:electricianJob')
-AddEventHandler('toggleJob:electricianJob', function(start)
+RegisterNetEvent('toggleJob:paletoWorks')
+AddEventHandler('toggleJob:paletoWorks', function(start, job_name)
   local xPlayer = ESX.GetPlayerFromId(source)
-  local job = start and 'electrician' or 'unemployed'
+  local job = start and job_name or 'unemployed'
 
   if xPlayer then
-    if ESX.DoesJobExist('electrician', 0) then
+    if ESX.DoesJobExist(job_name, 0) or job == 'unemployed' then
       xPlayer.setJob(job , 0)
   	end
   end
