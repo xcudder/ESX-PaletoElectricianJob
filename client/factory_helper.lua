@@ -29,6 +29,12 @@ end)
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
   	PlayerData.job = job
+  	if PlayerData.job and PlayerData.job.name ~= 'factory_helper' then
+		RemoveBlip(random_work_position_blip)
+	else
+		random_work_position 		= Config.paleto_factory_helper.WorkPoints[math.random(#Config.paleto_factory_helper.WorkPoints)]
+	  	random_work_position_blip = AddBlipForCoord(random_work_position.x, random_work_position.y, random_work_position.z)
+	end
 end)
 
 -- Create blips
