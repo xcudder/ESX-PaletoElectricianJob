@@ -23,10 +23,12 @@ Config.paleto_electrician = {
             ['shoes_1'] = 16,   ['shoes_2'] = 4,
         }
     },
-
-    NPCHash					= 0x867639D1,
-
-    NPCZAxis				= 30.47
+    QuestGiver = {
+        NPCHash	= 0x867639D1,
+        NPCXAxis = -285.38,
+        NPCYAxis = 6029.76,
+        NPCZAxis = 30.47,
+    }
 }
 
 Config.paleto_factory_helper = {
@@ -52,7 +54,10 @@ Config.paleto_factory_helper = {
         }
     },
 
-    NPCHash                 = 0x62018559,
-
-    NPCZAxis                = 30.26
+    QuestGiver = {
+        NPCHash = 0x62018559,
+        NPCXAxis = -73.09,
+        NPCYAxis = 6266.6,
+        NPCZAxis = 30.26
+    }
 }

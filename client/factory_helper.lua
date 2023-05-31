@@ -18,7 +18,7 @@ RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
   	PlayerData = xPlayer
   	if PlayerData.job and PlayerData.job.name == 'factory_helper' then
-  		putUniformOn()
+  		putUniformOn(Config.paleto_factory_helper.Clothes)
 		random_work_position 		= Config.paleto_factory_helper.WorkPoints[math.random(#Config.paleto_factory_helper.WorkPoints)]
 		random_work_position_blip 	= AddBlipForCoord(random_work_position.x, random_work_position.y, random_work_position.z)
 
@@ -58,13 +58,17 @@ end)
 
 -- Future quest giver
 Citizen.CreateThread(function()
-	RequestModel(Config.paleto_factory_helper.NPCHash)
+	RequestModel(Config.paleto_factory_helper.QuestGiver.NPCHash)
 	
-	while not HasModelLoaded(Config.paleto_factory_helper.NPCHash) do
+	while not HasModelLoaded(Config.paleto_factory_helper.QuestGiver.NPCHash) do
 		Wait(1)
 	end
 
-	quest_giver = CreatePed(1, Config.paleto_factory_helper.NPCHash, -73.09, 6266.6, Config.paleto_factory_helper.NPCZAxis, 60, false, true)
+	quest_giver = CreatePed(1, 
+		Config.paleto_factory_helper.QuestGiver.NPCHash,
+		Config.paleto_factory_helper.QuestGiver.NPCXAxis,
+		Config.paleto_factory_helper.QuestGiver.NPCYAxis,
+		Config.paleto_factory_helper.QuestGiver.NPCZAxis, 60, false, true)
 	SetBlockingOfNonTemporaryEvents(quest_giver, true)
 	SetPedDiesWhenInjured(quest_giver, false)
 	SetPedCanPlayAmbientAnims(quest_giver, true)
@@ -91,7 +95,7 @@ Citizen.CreateThread(function()
 
 				if(IsControlJustReleased(1, 38))then
 					TriggerServerEvent('toggleJob:paletoWorks', true, 'factory_helper')
-					putUniformOn()
+					putUniformOn(Config.paleto_factory_helper.Clothes)
 				end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
@@ -124,7 +128,7 @@ Citizen.CreateThread(function()
 					DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
 
 					if(IsControlJustReleased(1, 38)) then
-						working()
+						factory_helper_working()
 					end
 				end
 			end
@@ -132,23 +136,7 @@ Citizen.CreateThread(function()
 	end
 end)
 
-function putUniformOn()
-    ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
-	    if skin.sex == 0 then
-	        TriggerEvent('skinchanger:loadClothes', skin, Config.paleto_factory_helper.Clothes.male)
-	    elseif skin.sex == 1 then
-	        TriggerEvent('skinchanger:loadClothes', skin, Config.paleto_factory_helper.Clothes.female)
-	    end
-    end)
-end
-
-function getOutOfUniform()
-    ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
-    	TriggerEvent('skinchanger:loadSkin', skin)
-    end)
-end
-
-function working()
+function factory_helper_working()
 	local playerPed = GetPlayerPed(-1)
 	isWorking = true
     Citizen.CreateThread(function()

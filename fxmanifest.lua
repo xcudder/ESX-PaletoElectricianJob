@@ -12,5 +12,6 @@ server_scripts {
 client_scripts {
 	'config.lua',
 	'client/electrician.lua',
-	'client/factory_helper.lua'
+	'client/factory_helper.lua',
+	'client/functions.lua'
 }
