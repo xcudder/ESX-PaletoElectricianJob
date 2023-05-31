@@ -41,8 +41,8 @@ Config.paleto_factory_helper = {
     Clothes = {
         male = {
             ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
-            ['torso_1'] = 65,   ['torso_2'] = 3,
-            ['pants_1'] = 38, ['pants_2'] = 3,
+            ['torso_1'] = 56,   ['torso_2'] = 0,
+            ['pants_1'] = 27, ['pants_2'] = 7,
             ['shoes_1'] = 51
         },
         female = {
