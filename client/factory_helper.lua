@@ -139,21 +139,22 @@ end)
 function factory_helper_working()
 	local playerPed = GetPlayerPed(-1)
 	isWorking = true
+
     Citizen.CreateThread(function()
-        Citizen.Wait(10)
+		RequestAnimDict("abigail_mcs_1_concat-9")
+        Citizen.Wait(100)
 
         if random_work_position.type == 'computer' then
-        	local ped = PlayerPedId()
-			RequestAnimDict("amb@prop_human_seat_computer@male@base")
             Citizen.Wait(100)
-            TaskPlayAnim((ped), "amb@prop_human_seat_computer@male@base", 'base', 12.0, 12.0, -1, 80, 0, 0, 0, 0)
-            -- SetEntityHeading(ped, 270.0)
-			Wait(30000)
+            TaskPlayAnim(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9', 12.0, 12.0, -1, 81, 0.0, 1, 1, 1)
+            SetEntityHeading(playerPed, 375.0)
+            Wait(10000)
         else
 			TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-			Wait(30000)
+			Wait(15000)
         end
 
+        StopAnimTask(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9')
         ClearPedTasksImmediately(playerPed)
         
         RemoveBlip(random_work_position_blip)
@@ -163,7 +164,7 @@ function factory_helper_working()
         ClearAreaOfPeds(random_work_position.x, random_work_position.y, 30.9, 2.5, 1)
         
         points_worked_on = points_worked_on + 1
-        if  math.fmod(points_worked_on, 4) == 0 then
+        if  math.fmod(points_worked_on, 3) == 0 then
         	TriggerEvent('notifications', "#29c501", "Worker", "You've worked a total of "..points_worked_on.." points")
     	end
     	isWorking = false
