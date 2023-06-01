@@ -1,81 +1,59 @@
 local PlayerData = {}
 
-local isWorking = false
-
-local quest_giver = false
-
+--counters
 local points_worked_on = 0
-
 local reward = 0
 
+-- boilerplating
+local quest_giver = false
+local local_cfg = Config.paleto_electrician
+
+-- randow work temp storage
 local random_work_position_blip = false
 local random_work_position = {}
+local isWorking = false
 
 ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-  PlayerData = xPlayer
-  	if PlayerData.job and PlayerData.job.name == 'electrician' then
-  		putUniformOn(Config.paleto_electrician.Clothes)
-  		random_work_position 		= Config.paleto_electrician.WorkPoints[math.random(#Config.paleto_electrician.WorkPoints)]
-		random_work_position_blip 	= AddBlipForCoord(random_work_position.x, random_work_position.y, random_work_position.z)
+	PlayerData = xPlayer
+	if PlayerData.job and PlayerData.job.name == 'electrician' then
+		putUniformOn(local_cfg.Clothes)
+		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
+			random_work_position = new_work
+			random_work_position_blip = new_blip
+		end)
 	end
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-  PlayerData.job = job
-  if PlayerData.job and PlayerData.job.name ~= 'electrician' then
-  	RemoveBlip(random_work_position_blip)
-  else
-  	random_work_position = Config.paleto_electrician.WorkPoints[math.random(#Config.paleto_electrician.WorkPoints)]
-  	random_work_position_blip = AddBlipForCoord(random_work_position.x, random_work_position.y, random_work_position.z)
-  end
-end)
-
--- Create blips
-local blips = {
-	{title="Power Plant #1", colour=0, id=620, x=-285.38, y=6029.76, z=31.5},
-}
-
-Citizen.CreateThread(function()
-    for _, info in pairs(blips) do
-		info.blip = AddBlipForCoord(info.x, info.y, info.z)
-		SetBlipSprite(info.blip, info.id)
-		SetBlipDisplay(info.blip, 4)
-		SetBlipScale(info.blip, 0.9)
-		SetBlipColour(info.blip, info.colour)
-		SetBlipAsShortRange(info.blip, true)
-		BeginTextCommandSetBlipName("STRING")
-		AddTextComponentString(info.title)
-		EndTextCommandSetBlipName(info.blip)
-    end
-end)
-
--- Future quest giver
-Citizen.CreateThread(function()
-	RequestModel(Config.paleto_electrician.QuestGiver.NPCHash)
-	
-	while not HasModelLoaded(Config.paleto_electrician.QuestGiver.NPCHash) do
-		Wait(1)
+	PlayerData.job = job
+	if PlayerData.job and PlayerData.job.name ~= 'electrician' then
+		RemoveBlip(random_work_position_blip)
+	else
+		putUniformOn(local_cfg.Clothes)
+		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
+			random_work_position = new_work
+			random_work_position_blip = new_blip
+		end)
 	end
-
-	quest_giver = CreatePed(1,
-		Config.paleto_electrician.QuestGiver.NPCHash,
-		Config.paleto_electrician.QuestGiver.NPCXAxis,
-		Config.paleto_electrician.QuestGiver.NPCYAxis,
-		Config.paleto_electrician.QuestGiver.NPCZAxis, 60, false, true)
-	SetBlockingOfNonTemporaryEvents(quest_giver, true)
-	SetPedDiesWhenInjured(quest_giver, false)
-	SetPedCanPlayAmbientAnims(quest_giver, true)
-	SetPedCanRagdollFromPlayerImpact(quest_giver, false)
-	SetEntityInvincible(quest_giver, true)
-	FreezeEntityPosition(quest_giver, true)
-	TaskStartScenarioInPlace(quest_giver, "WORLD_HUMAN_SMOKING", 0, true);
 end)
 
--- Start/Stop Job
+-- One time setup
+Citizen.CreateThread(function()
+	quest_giver = create_task_giver(local_cfg, "WORLD_HUMAN_SMOKING")
+	setupBlip({
+		title="Cleaning Service",
+		colour=0, id=837,
+		x=local_cfg.QuestGiver.NPCXAxis8,
+		y=local_cfg.QuestGiver.NPCYAxis,
+		z=local_cfg.QuestGiver.NPCZAxis
+	})
+end)
+
+-- Continuous check of quest-giver-proximity based logic
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
@@ -84,77 +62,44 @@ Citizen.CreateThread(function()
 			Wait(1)
 		end
 
-		local A = GetEntityCoords(GetPlayerPed(-1), false)
-		local B = GetEntityCoords(quest_giver, false)
-		if Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < 1.5 then
+		 if offer_job(quest_giver) then
 			if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
-
-				if(IsControlJustReleased(1, 38))then
-					TriggerServerEvent('toggleJob:paletoWorks', true, 'electrician')
-					putUniformOn(Config.paleto_electrician.Clothes)
-				end
+				if(IsControlJustReleased(1, 38))then TriggerServerEvent('toggleJob:paletoWorks', 'electrician') end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
-
-				if(IsControlJustReleased(1, 38))then
-					TriggerServerEvent('toggleJob:paletoWorks', false, '')
-					getOutOfUniform()
-					reward = math.floor(points_worked_on / 4)
-					TriggerEvent('notifications', "#29c501", "Electrician", "You've become ".. reward .."$ richer")
-					TriggerServerEvent("giveReward:paletoWorks", reward)
-				end
+				if(IsControlJustReleased(1, 38))then stop_work('electrician', points_worked_on, 4) end
 			end
 		end
 	end
 end)
 
--- Random task logics
+-- continuous check of random work position logic
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
-
 		if PlayerData.job and PlayerData.job.name == 'electrician' then
-			local player_position = GetEntityCoords(GetPlayerPed(-1), false)
-			local work_player_distance = Vdist(random_work_position.x, random_work_position.y, random_work_position.z, player_position.x, player_position.y, player_position.z)
-
-			DrawMarker(1, random_work_position.x, random_work_position.y, random_work_position.z,0, 0, 0, 0, 0, 0, 1.0, 1.0, 1.0, 255, 255, 255, 155, 0, 0, 2, 0, 0, 0, 0)
-			
-			if work_player_distance < 1.5 then
-				if isWorking == false then
-					DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
-
-					if(IsControlJustReleased(1, 38)) then
-						electrician_working()
-					end
-				end
+			drawWorkMarker(random_work_position)
+			if display_work_cta(isWorking, random_work_position) then
+				DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
+				if(IsControlJustReleased(1, 38)) then electrician_working() end
 			end
 		end
 	end
 end)
 
+-- Job specific block of logic
 function electrician_working()
-	local playerPed = GetPlayerPed(-1)
 	isWorking = true
-    Citizen.CreateThread(function()
-        Citizen.Wait(10)
-		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-		Wait(10000)
-        TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_POLICE_INVESTIGATE", 0, true)
-		Wait(10000)
-        TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
-        Wait(10000)
-        ClearPedTasksImmediately(playerPed)
-        
-		RemoveBlip(random_work_position_blip)
-        random_work_position = Config.paleto_electrician.WorkPoints[math.random(#Config.paleto_electrician.WorkPoints)]
-		random_work_position_blip = AddBlipForCoord(random_work_position.x, random_work_position.y, 30.0)
-        
-        points_worked_on = points_worked_on + 1
-        if  math.fmod(points_worked_on, 4) == 0 then
-        	TriggerEvent('notifications', "#29c501", "Electrician", "You've worked a total of "..points_worked_on.." points")
-    	end
-    	isWorking = false
-    end)
+	Citizen.CreateThread(function()
+		Citizen.Wait(10)
+		run_work_animations('electrician', random_work_position, GetPlayerPed(-1))
+		isWorking = false
+		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
+			random_work_position = new_work
+			random_work_position_blip = new_blip
+		end)
+		points_worked_on = points_worked_on + 1
+		communicate_job_progression('Electrician', points_worked_on, 4)
+	end)
 end
-

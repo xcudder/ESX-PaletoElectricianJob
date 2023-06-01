@@ -94,12 +94,12 @@ function cleaner_working()
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
 		run_work_animations('cleaner', random_work_position, GetPlayerPed(-1))
+		isWorking = false
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
 		end)
 		points_worked_on = points_worked_on + 1
-		communicate_cleaner_progression('Cleaner', points_worked_on, 4)
-		isWorking = false
+		communicate_job_progression('Cleaner', points_worked_on, 4)
 	end)
 end
