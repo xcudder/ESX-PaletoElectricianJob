@@ -45,9 +45,9 @@ end)
 Citizen.CreateThread(function()
 	quest_giver = create_task_giver(local_cfg, "WORLD_HUMAN_SMOKING")
 	setupBlip({
-		title="Cleaning Service",
-		colour=0, id=837,
-		x=local_cfg.QuestGiver.NPCXAxis8,
+		title="Meat Factory",
+		colour=0, id=791,
+		x=local_cfg.QuestGiver.NPCXAxis,
 		y=local_cfg.QuestGiver.NPCYAxis,
 		z=local_cfg.QuestGiver.NPCZAxis
 	})

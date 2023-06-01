@@ -41,29 +41,41 @@ end
 
 function run_work_animations(work, work_position, playerPed)
 	if work == 'cleaner' then
-		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_JANITOR", 0, true)
-		Wait(10000)
-		ClearPedTasksImmediately(playerPed)
+		run_cleaner_animation()
 	elseif work == 'electrician' then
-		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-		Wait(10000)
-		TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_POLICE_INVESTIGATE", 0, true)
-		Wait(10000)
-		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
-		Wait(10000)
-		ClearPedTasksImmediately(playerPed)
+		run_electrician_animation()
 	elseif work == 'factory_helper' then
-		if random_work_position.type == 'computer' then
-			Citizen.Wait(100)
-			TaskPlayAnim(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9', 12.0, 12.0, -1, 81, 0.0, 1, 1, 1)
-			SetEntityHeading(playerPed, 375.0)
-			Wait(10000)
-		else
-			TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-			Wait(15000)
-		end
-		StopAnimTask(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9')
+		run_factory_helper_animation()
 	end
+end
+
+function run_cleaner_animation()
+	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_JANITOR", 0, true)
+	Wait(10000)
+	ClearPedTasksImmediately(playerPed)
+end
+
+function run_electrician_animation()
+	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
+	Wait(10000)
+	TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_POLICE_INVESTIGATE", 0, true)
+	Wait(10000)
+	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
+	Wait(10000)
+	ClearPedTasksImmediately(playerPed)
+end
+
+function run_factory_helper_animation()
+	if random_work_position.type == 'computer' then
+		Citizen.Wait(100)
+		TaskPlayAnim(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9', 12.0, 12.0, -1, 81, 0.0, 1, 1, 1)
+		SetEntityHeading(playerPed, 375.0)
+		Wait(10000)
+	else
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
+		Wait(15000)
+	end
+	StopAnimTask(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9')
 end
 
 function offer_job(quest_giver)
