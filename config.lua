@@ -61,3 +61,35 @@ Config.paleto_factory_helper = {
         NPCZAxis = 30.26
     }
 }
+
+
+Config.paleto_cleaner = {
+    WorkPoints = {
+        {x = -37.22, y = 6421.18, z = 30.49},
+        {x = -40.22, y = 6451.18, z = 30.49},
+        {x = -37.22, y = 6421.18, z = 30.49},
+        {x = -37.22, y = 6451.18, z = 30.49},
+    },
+
+    Clothes = {
+        male = {
+            ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+            ['torso_1'] = 65,   ['torso_2'] = 3,
+            ['pants_1'] = 38, ['pants_2'] = 3,
+            ['shoes_1'] = 51
+        },
+        female = {
+            ['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+            ['torso_1'] = 4,   ['torso_2'] = 14,
+            ['arms'] = 4,
+            ['pants_1'] = 25,   ['pants_2'] = 1,
+            ['shoes_1'] = 16,   ['shoes_2'] = 4,
+        }
+    },
+    QuestGiver = {
+        NPCHash = 0xF06B849D,
+        NPCXAxis = 1.68,
+        NPCYAxis = 6427.31,
+        NPCZAxis = 30.43,
+    }
+}
