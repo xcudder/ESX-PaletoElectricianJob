@@ -10,6 +10,8 @@ Config.paleto_electrician = {
 
 	Clothes = {
 		male = {
+			['arms'] = 2, ['glasses_1'] = 0,
+			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 65,   ['torso_2'] = 3,
 			['pants_1'] = 38, ['pants_2'] = 3,
@@ -40,6 +42,8 @@ Config.paleto_factory_helper = {
 
 	Clothes = {
 		male = {
+			['arms'] = 2, ['glasses_1'] = 0,
+			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 56,   ['torso_2'] = 0,
 			['pants_1'] = 27, ['pants_2'] = 7,
@@ -71,6 +75,8 @@ Config.paleto_cleaner = {
 
 	Clothes = {
 		male = {
+			['arms'] = 2, ['glasses_1'] = 0,
+			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 65,   ['torso_2'] = 3,
 			['pants_1'] = 38, ['pants_2'] = 3,
