@@ -2,8 +2,7 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent("giveReward:paletoWorks")
 AddEventHandler("giveReward:paletoWorks", function(reward)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
+	local xPlayer = ESX.GetPlayerFromId(source)
 	xPlayer.addAccountMoney('money', reward)
 end)
 

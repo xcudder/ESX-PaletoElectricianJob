@@ -6,7 +6,8 @@ description 'PaletoWorks'
 
 server_scripts {
 	'server/main.lua',
-	'config.lua',
+	'server/commands.lua',
+	'config.lua'
 }
 
 client_scripts {
@@ -14,5 +15,6 @@ client_scripts {
 	'client/functions.lua',
 	'client/electrician.lua',
 	'client/factory_helper.lua',
-	'client/cleaner.lua'
+	'client/cleaner.lua',
+	'client/commands.lua'
 }
