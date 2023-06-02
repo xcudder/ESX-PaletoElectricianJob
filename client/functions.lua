@@ -17,8 +17,9 @@ function display_work_cta(isWorking, random_work_position)
 	return work_player_distance < 1.5 and isWorking == false
 end
 
-function drawWorkMarker(wp)
-	DrawMarker(1, wp.x, wp.y, wp.z,0, 0, 0, 0, 0, 0, 1.0, 1.0, 1.0, 255, 255, 255, 155, 0, 0, 2, 0, 0, 0, 0)			
+function drawWorkMarker(wp, marker_type)
+	if not marker_type then marker_type = 1 end
+	DrawMarker(marker_type, wp.x, wp.y, wp.z,0, 0, 0, 0, 0, 0, 1.0, 1.0, 1.0, 255, 255, 255, 155, 0, 0, 2, 0, 0, 0, 0)
 end
 
 function create_task_giver(work_cfg, quest_giver_scenario)
@@ -80,9 +81,14 @@ function run_factory_helper_animation(work_position, playerPed)
 	end
 end
 
-function offer_job(quest_giver)
+function entity_close_enough(second_entity)
 	local A = GetEntityCoords(GetPlayerPed(-1), false)
-	local B = GetEntityCoords(quest_giver, false)
+	local B = GetEntityCoords(second_entity, false)
+	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < 1.5
+end
+
+function coordinates_close_enough(B)
+	local A = GetEntityCoords(GetPlayerPed(-1), false)
 	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < 1.5
 end
 

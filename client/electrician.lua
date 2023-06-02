@@ -62,7 +62,7 @@ Citizen.CreateThread(function()
 			Wait(1)
 		end
 
-		 if offer_job(quest_giver) then
+		 if entity_close_enough(quest_giver) then
 			if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
 				if(IsControlJustReleased(1, 38))then TriggerServerEvent('toggleJob:paletoWorks', 'electrician') end

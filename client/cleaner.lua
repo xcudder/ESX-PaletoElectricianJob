@@ -63,13 +63,21 @@ Citizen.CreateThread(function()
 			Wait(1)
 		end
 
-		 if offer_job(quest_giver) then
+		if random_property_blip then
+			drawWorkMarker(random_property.Entrance, 1)
+			if coordinates_close_enough(random_property.Entrance) then
+				DisplayHelpText("Press ~INPUT_CONTEXT_SECONDARY~ to enter and clean the house")
+				if(IsControlJustReleased(1, 52)) then ESX.ShowNotification("Would be entering now") end
+			end
+		end
+
+		if entity_close_enough(quest_giver) then
 			if PlayerData.job and PlayerData.job.name ~= 'cleaner' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
-				if(IsControlJustReleased(1, 38))then TriggerServerEvent('toggleJob:paletoWorks', 'cleaner') end
+				if(IsControlJustReleased(1, 38)) then TriggerServerEvent('toggleJob:paletoWorks', 'cleaner') end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
-				if(IsControlJustReleased(1, 38))then stop_work('cleaner', points_worked_on, 4) end
+				if(IsControlJustReleased(1, 38)) then stop_work('cleaner', points_worked_on, 4) end
 			end
 		end
 	end
@@ -79,7 +87,7 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
-		if PlayerData.job and PlayerData.job.name == 'cleaner' then
+		if PlayerData.job and PlayerData.job.name == 'cleaner' and random_work_position then
 			drawWorkMarker(random_work_position)
 			if display_work_cta(isWorking, random_work_position) then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
