@@ -47,7 +47,22 @@ function run_work_animations(work, work_position, playerPed)
 		run_electrician_animation(work_position, playerPed)
 	elseif work == 'factory_helper' then
 		run_factory_helper_animation(work_position, playerPed)
+	elseif work == 'police_intern' then
+		run_intern_animation(work_position, playerPed)
 	end
+end
+
+function run_intern_animation(work_position, playerPed)
+	if work_position.type == 'coffee' then
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_AA_COFFEE", 0, true)
+		Wait(10000)
+	else
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_COP_IDLES", 0, true)
+		Wait(5000)
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
+		Wait(5000)
+	end
+	ClearPedTasksImmediately(playerPed)
 end
 
 function run_cleaner_animation()

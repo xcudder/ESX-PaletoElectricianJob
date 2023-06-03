@@ -10,20 +10,14 @@ Config.paleto_electrician = {
 
 	Clothes = {
 		male = {
-			['arms'] = 2, ['glasses_1'] = 0,
+			['arms_1'] = 2, ['glasses_1'] = 0,
 			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 65,   ['torso_2'] = 3,
 			['pants_1'] = 38, ['pants_2'] = 3,
 			['shoes_1'] = 51
 		},
-		female = {
-			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
-			['torso_1'] = 4,   ['torso_2'] = 14,
-			['arms'] = 4,
-			['pants_1'] = 25,   ['pants_2'] = 1,
-			['shoes_1'] = 16,   ['shoes_2'] = 4,
-		}
+		female = {}
 	},
 	QuestGiver = {
 		NPCHash	= 0x867639D1,
@@ -42,20 +36,14 @@ Config.paleto_factory_helper = {
 
 	Clothes = {
 		male = {
-			['arms'] = 2, ['glasses_1'] = 0,
+			['arms_1'] = 2, ['glasses_1'] = 0,
 			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 56,   ['torso_2'] = 0,
 			['pants_1'] = 27, ['pants_2'] = 7,
 			['shoes_1'] = 51
 		},
-		female = {
-			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
-			['torso_1'] = 4,   ['torso_2'] = 14,
-			['arms'] = 4,
-			['pants_1'] = 25,   ['pants_2'] = 1,
-			['shoes_1'] = 16,   ['shoes_2'] = 4,
-		}
+		female = {}
 	},
 
 	QuestGiver = {
@@ -84,25 +72,45 @@ Config.paleto_cleaner = {
 	},
 	Clothes = {
 		male = {
-			['arms'] = 2, ['glasses_1'] = 0,
+			['arms_1'] = 2, ['glasses_1'] = 0,
 			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 65,   ['torso_2'] = 3,
 			['pants_1'] = 38, ['pants_2'] = 3,
 			['shoes_1'] = 51
 		},
-		female = {
-			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
-			['torso_1'] = 4,   ['torso_2'] = 14,
-			['arms'] = 4,
-			['pants_1'] = 25,   ['pants_2'] = 1,
-			['shoes_1'] = 16,   ['shoes_2'] = 4,
-		}
+		female = {}
 	},
 	QuestGiver = {
 		NPCHash = 0xF06B849D,
 		x = 1.68,
 		y = 6427.31,
 		z = 30.43,
+	}
+}
+
+Config.paleto_police_intern = {
+	WorkPoints = {
+		{x = -446.48, y = 6008.81, z = 30.72},
+		{x = -444.73, y = 6010.51, z = 30.72},
+		{x = -449.69, y = 6010.19, z = 30.72, type = 'coffee'}
+	},
+
+	Clothes = {
+		male = {
+			['arms_1'] = 11, ['glasses_1'] = 0,
+			['chain_1'] = 0,
+			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+			['torso_1'] = 13,   ['torso_2'] = 0,
+			['pants_1'] = 76, ['pants_2'] = 0,
+			['shoes_1'] = 31
+		},
+		female = {}
+	},
+	QuestGiver = {
+		NPCHash	= 0x15F8700D,
+		x = -441.92,
+		y = 6020.84,
+		z = 30.49,
 	}
 }
