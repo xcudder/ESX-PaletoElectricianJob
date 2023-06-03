@@ -1,7 +1,8 @@
 # ESX-PaletoWorks
-Basic local jobs for ESX.
+Basic local paletp jobs and a paleto used car lot for ESX.
+Just trying to give the top of the map some love.
 
-Requires esx_skin (and possibly the skinchanger) esx_jobs and rc_notify, which I'll replace for a normal notification soon enough.
+Requires esx_skin (and possibly the skinchanger?) esx_jobs and rc_notify, which I'll replace for a normal notification soon enough.
 
 Thanks to ESX-CityWorks and RC-Mining Job, which were the scripts I looked into to learn the ropes.
 
@@ -18,4 +19,4 @@ INSERT INTO `job_grades` (`job_name`, `name`, `label`, `grade`) VALUES ('police_
 
 Add this project to the resources folder and server.cfg and you're done.
 
-This should be a good boilerplate for similar jobs you may want to create with no vehicular moving around.
+This should be a good boilerplate for similar jobs you may want to create with little to no vehicular moving around.

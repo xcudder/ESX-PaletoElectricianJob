@@ -2,7 +2,7 @@ fx_version 'adamant'
 
 game 'gta5'
 
-description 'PaletoWorks'
+description 'PaletoLives'
 
 server_scripts {
 	'server/main.lua',
@@ -17,5 +17,6 @@ client_scripts {
 	'client/factory_helper.lua',
 	'client/cleaner.lua',
 	'client/police_intern.lua',
-	'client/commands.lua'
+	'client/commands.lua',
+	'client/used_car_lot.lua'
 }
