@@ -27,9 +27,9 @@ Config.paleto_electrician = {
 	},
 	QuestGiver = {
 		NPCHash	= 0x867639D1,
-		NPCXAxis = -285.38,
-		NPCYAxis = 6029.76,
-		NPCZAxis = 30.47,
+		x = -285.38,
+		y = 6029.76,
+		z = 30.47,
 	}
 }
 
@@ -60,19 +60,28 @@ Config.paleto_factory_helper = {
 
 	QuestGiver = {
 		NPCHash = 0x62018559,
-		NPCXAxis = -73.09,
-		NPCYAxis = 6266.6,
-		NPCZAxis = 30.26
+		x = -73.09,
+		y = 6266.6,
+		z = 30.26
 	}
 }
 
 
 Config.paleto_cleaner = {
 	WorkPoints = {
-		{x = -1.34, y = 6432.75, z = 30.43},
-		{x = -2.22, y = 6433.71, z = 30.43}
+		['low-end'] = {
+			{ x = 264.52, y = -997.25, z = -100.01, active = 1 },
+			{ x = 254.17, y = -1000.8, z = -99.93, active = 1 },
+			{ x = 259.8, y = -1003.74, z = -100.01, active = 1 }
+		},
+		['mid-end'] = {
+			{ x = 346.81, y = -1012.83, z = -100.2, active = 1 },
+			{ x = 349.89, y = -1007.5, z = -100.2, active = 1 },
+			{ x = 342.95, y = -1001.86, z = -100.2, active = 1 },
+			{ x = 338.21, y = -996.64, z = -100.2, active = 1 },
+			{ x = 347.01, y = -995.39, z = -100.11, active = 1 }
+		}
 	},
-
 	Clothes = {
 		male = {
 			['arms'] = 2, ['glasses_1'] = 0,
@@ -92,8 +101,8 @@ Config.paleto_cleaner = {
 	},
 	QuestGiver = {
 		NPCHash = 0xF06B849D,
-		NPCXAxis = 1.68,
-		NPCYAxis = 6427.31,
-		NPCZAxis = 30.43,
+		x = 1.68,
+		y = 6427.31,
+		z = 30.43,
 	}
 }

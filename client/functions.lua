@@ -29,7 +29,7 @@ function create_task_giver(work_cfg, quest_giver_scenario)
 		Wait(1)
 	end
 
-	local quest_giver = CreatePed(1, work_cfg.QuestGiver.NPCHash, work_cfg.QuestGiver.NPCXAxis, work_cfg.QuestGiver.NPCYAxis, work_cfg.QuestGiver.NPCZAxis, 60, false, true)
+	local quest_giver = CreatePed(1, work_cfg.QuestGiver.NPCHash, work_cfg.QuestGiver.x, work_cfg.QuestGiver.y, work_cfg.QuestGiver.z, 60, false, true)
 	SetBlockingOfNonTemporaryEvents(quest_giver, true)
 	SetPedDiesWhenInjured(quest_giver, false)
 	SetPedCanPlayAmbientAnims(quest_giver, true)

@@ -31,6 +31,7 @@ RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	PlayerData.job = job
 	if PlayerData.job and PlayerData.job.name ~= 'electrician' then
+		points_worked_on = 0
 		RemoveBlip(random_work_position_blip)
 	else
 		putUniformOn(local_cfg.Clothes)
@@ -47,9 +48,9 @@ Citizen.CreateThread(function()
 	setupBlip({
 		title="Power Plant #1",
 		colour=0, id=620,
-		x=local_cfg.QuestGiver.NPCXAxis,
-		y=local_cfg.QuestGiver.NPCYAxis,
-		z=local_cfg.QuestGiver.NPCZAxis
+		x=local_cfg.QuestGiver.x,
+		y=local_cfg.QuestGiver.y,
+		z=local_cfg.QuestGiver.z
 	})
 end)
 
