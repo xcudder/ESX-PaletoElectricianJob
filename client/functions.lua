@@ -50,10 +50,16 @@ function run_work_animations(work, work_position, playerPed)
 	end
 end
 
-function run_cleaner_animation(work_position, playerPed)
-	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_JANITOR", 0, true)
-	Wait(10000)
-	ClearPedTasksImmediately(playerPed)
+function run_cleaner_animation(work_position, playerPed, a1, a2, a3, a4, a5, a6)
+	RequestAnimDict("amb@world_human_janitor@male@idle_a")
+	Wait(100)
+    local broom = CreateObject(GetHashKey("prop_tool_broom2"), 0, 0, 0, true, true, true) 
+    AttachEntityToEntity(broom, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 0x188E), 0.6, 0.7, 0.5, -150.0, 100.0, 220.0, true, true, false, true, 1, true)
+	TaskPlayAnim((playerPed), 'amb@world_human_janitor@male@idle_a', 'idle_a', 12.0, 12.0, 7200, 5, 0.2, 0, 0, 0)
+	Wait(7200)
+    DetachEntity(broom, 1, true)
+    DeleteEntity(broom)
+    DeleteObject(broom)
 end
 
 function run_electrician_animation(work_position, playerPed)
@@ -104,10 +110,11 @@ function communicate_job_progression(job, points_worked_on, progression_step)
 	end
 end
 
-function stop_work(job, points_worked_on, progression_step)
+function stop_work(job, points_worked_on, progression_step, multiplier)
 	TriggerServerEvent('toggleJob:paletoWorks', 'unemployed')
 	getOutOfUniform()
 	reward = math.floor(points_worked_on / progression_step)
+	if multiplier then reward = reward * multiplier end
 	TriggerEvent('notifications', "#29c501", job, "You've become ".. reward .."$ richer")
 	TriggerServerEvent("giveReward:paletoWorks", reward)
 end

@@ -83,7 +83,7 @@ Citizen.CreateThread(function()
 				if(IsControlJustReleased(1, 38)) then TriggerServerEvent('toggleJob:paletoWorks', 'cleaner') end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
-				if(IsControlJustReleased(1, 38)) then stop_work('cleaner', points_worked_on, 1) end
+				if(IsControlJustReleased(1, 38)) then stop_work('cleaner', points_worked_on, 5, 2) end
 			end
 		end
 	end
@@ -117,7 +117,7 @@ function cleaner_working(work_index)
 		isWorking , workSpots[work_index].active = false, 0
 		houseWorkedPoints = houseWorkedPoints + 1
 		points_worked_on = points_worked_on + 1
-		communicate_job_progression('Cleaner', points_worked_on, 3)
+		communicate_job_progression('Cleaner', points_worked_on, 5)
 		if totalWorkPointsInThisHouse == houseWorkedPoints then -- we're done, get out
 			TriggerServerEvent("enterProperty:paletoWorks", false, random_property.Entrance)
 			isInside = false
