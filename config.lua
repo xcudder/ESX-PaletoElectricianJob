@@ -91,9 +91,13 @@ Config.paleto_cleaner = {
 
 Config.paleto_police_intern = {
 	WorkPoints = {
+		-- some duplicates are a lazy way of increasing probability
+		{x = -446.48, y = 6008.81, z = 30.72},
 		{x = -446.48, y = 6008.81, z = 30.72},
 		{x = -444.73, y = 6010.51, z = 30.72},
-		{x = -449.69, y = 6010.19, z = 30.72, type = 'coffee'}
+		{x = -444.73, y = 6010.51, z = 30.72},
+		{x = -449.69, y = 6010.19, z = 30.72, type = 'coffee'},
+		{x = -447.52, y = 6013.59, z = 30.72, type = 'lunch_break'}
 	},
 
 	Clothes = {

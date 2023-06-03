@@ -56,11 +56,14 @@ function run_intern_animation(work_position, playerPed)
 	if work_position.type == 'coffee' then
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_AA_COFFEE", 0, true)
 		Wait(10000)
+	elseif work_position.type == 'lunch_break' then
+		TaskStartScenarioAtPosition(playerPed, "WORLD_HUMAN_SEAT_WALL_EATING", -447.80, 6013.20, 31.72, 2, 10000, 0, 1)
+		Wait(10000)
 	else
-		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_COP_IDLES", 0, true)
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_TOURIST_MOBILE", 0, true)
 		Wait(5000)
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-		Wait(5000)
+		Wait(15000)
 	end
 	ClearPedTasksImmediately(playerPed)
 end
@@ -75,6 +78,7 @@ function run_cleaner_animation()
 	DetachEntity(broom, 1, true)
 	DeleteEntity(broom)
 	DeleteObject(broom)
+	RemoveAnimDict("amb@world_human_janitor@male@idle_a")
 end
 
 function run_electrician_animation(work_position, playerPed)
@@ -95,6 +99,7 @@ function run_factory_helper_animation(work_position, playerPed)
 		SetEntityHeading(playerPed, 375.0)
 		Wait(10000)
 		StopAnimTask(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9')
+		RemoveAnimDict("abigail_mcs_1_concat-9")
 	else
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
 		Wait(15000)
