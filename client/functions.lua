@@ -50,16 +50,16 @@ function run_work_animations(work, work_position, playerPed)
 	end
 end
 
-function run_cleaner_animation(work_position, playerPed, a1, a2, a3, a4, a5, a6)
+function run_cleaner_animation()
 	RequestAnimDict("amb@world_human_janitor@male@idle_a")
 	Wait(100)
-    local broom = CreateObject(GetHashKey("prop_tool_broom2"), 0, 0, 0, true, true, true) 
-    AttachEntityToEntity(broom, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 0x188E), 0.6, 0.7, 0.5, -150.0, 100.0, 220.0, true, true, false, true, 1, true)
-	TaskPlayAnim((playerPed), 'amb@world_human_janitor@male@idle_a', 'idle_a', 12.0, 12.0, 7200, 5, 0.2, 0, 0, 0)
+	local broom = CreateObject(GetHashKey("prop_tool_broom2"), 0, 0, 0, true, true, true)
+	AttachEntityToEntity(broom, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 0x188E), 0.6, 0.7, 0.5, -150.0, 100.0, 220.0, true, true, false, true, 1, true)
+	TaskPlayAnim(GetPlayerPed(-1), 'amb@world_human_janitor@male@idle_a', 'idle_a', 12.0, 4.0, 7200, 5, 0.2, false, false, false)
 	Wait(7200)
-    DetachEntity(broom, 1, true)
-    DeleteEntity(broom)
-    DeleteObject(broom)
+	DetachEntity(broom, 1, true)
+	DeleteEntity(broom)
+	DeleteObject(broom)
 end
 
 function run_electrician_animation(work_position, playerPed)
