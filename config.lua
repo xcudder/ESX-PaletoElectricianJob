@@ -118,3 +118,11 @@ Config.paleto_police_intern = {
 		z = 30.49,
 	}
 }
+
+Config.used_car_lot = {
+	cars = {
+		'emperor2', 'asea', 'glendale', 'ratloader',
+		'voodoo2', 'bodhi2', 'dloader', 'rebel', 'fagaloa',
+		'tornado3', 'journey', 'surfer2', 'journey', 'premier'
+	}
+}
