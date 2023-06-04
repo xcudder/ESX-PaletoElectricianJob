@@ -1,6 +1,6 @@
 local slots, data = {}, false
 local possible_cars = Config.used_car_lot.cars
-local buy_prompt = "Press ~INPUT_CONTEXT~ to buy this piece of junk"
+local buy_prompt = "Press ~INPUT_CONTEXT~ to buy this piece of junk for 12k"
 
 Citizen.CreateThread(function()
 	setupBlip({
@@ -34,13 +34,15 @@ function create_car(cb, v3, slot_index)
 		if not ESX.Game.IsSpawnPointClear(v3, 2) then
 			if not slots[slot_index] then -- spawn point occupied but this client has no slot
 				slots[slot_index] = ESX.Game.GetClosestVehicle(v3)
-				ESX.ShowNotification("That thing happened...")
 			end
 			return
 		end
 		local car_hash = GetHashKey(possible_cars[math.random(#possible_cars)])
 		ESX.Game.SpawnVehicle(car_hash, v3, 100.0, function(vehicle)
+			SetVehicleDirtLevel(vehicle, 15.0)
 			SetVehicleDoorsLocked(vehicle, 2)
+			SetVehicleEngineHealth(vehicle, 700.0)
+			SetVehicleMaxSpeed(vehicle, 17.0)
 			cb(vehicle)
 		end)
 	end)
@@ -48,7 +50,18 @@ end
 
 function CarInteraction(vehicle)
 	DisplayHelpText(buy_prompt)
-	if(IsControlJustReleased(1, 38)) then
-		TaskWarpPedIntoVehicle(GetPlayerPed(-1), vehicle, -1)
+	if (IsControlJustReleased(1, 38)) then
+		local vehprops = ESX.Game.GetVehicleProperties(vehicle)
+		local plate =  exports['esx_vehicleshop']:GeneratePlate()
+
+		ESX.TriggerServerCallback('used_car_lot:buyVehicle', function(success)
+			if success then
+				SetVehicleNumberPlateText(vehicle, plate)
+				TaskWarpPedIntoVehicle(GetPlayerPed(-1), vehicle, -1)
+				SetVehicleDoorsLocked(vehicle, 1)
+			else
+				ESX.ShowNotification(TranslateCap('not_enough_money'))
+			end
+		end, vehprops.model, plate)
 	end
 end
