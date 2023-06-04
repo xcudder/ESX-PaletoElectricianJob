@@ -107,13 +107,15 @@ function run_factory_helper_animation(work_position, playerPed)
 	end
 end
 
-function entity_close_enough(second_entity)
+function entity_close_enough(second_entity, overwrite_radius)
+	if not overwrite_radius then overwrite_radius = 1.5 end
 	local A = GetEntityCoords(GetPlayerPed(-1), false)
 	local B = GetEntityCoords(second_entity, false)
 	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < 1.5
 end
 
-function coordinates_close_enough(B)
+function coordinates_close_enough(B, overwrite_radius)
+	if not overwrite_radius then overwrite_radius = 1.5 end
 	local A = GetEntityCoords(GetPlayerPed(-1), false)
 	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < 1.5
 end

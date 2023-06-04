@@ -123,6 +123,6 @@ Config.used_car_lot = {
 	cars = {
 		'emperor2', 'asea', 'glendale', 'ratloader',
 		'voodoo2', 'bodhi2', 'dloader', 'rebel', 'fagaloa',
-		'tornado3', 'journey', 'surfer2', 'journey', 'premier'
+		'tornado3', 'surfer2', 'premier'
 	}
 }
