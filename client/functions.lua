@@ -56,6 +56,9 @@ function run_intern_animation(work_position, playerPed)
 	if work_position.type == 'coffee' then
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_AA_COFFEE", 0, true)
 		Wait(10000)
+		v3 = GetEntityCoords(playerPed)
+		obj = GetClosestObjectOfType(v3.x, v3.y, v3.z, 100.0,`p_amb_coffeecup_01`, false, false, false)
+		delete_object(obj)
 	elseif work_position.type == 'lunch_break' then
 		TaskStartScenarioAtPosition(playerPed, "WORLD_HUMAN_SEAT_WALL_EATING", -447.80, 6013.20, 31.72, 2, 10000, 0, 1)
 		Wait(10000)
@@ -64,8 +67,17 @@ function run_intern_animation(work_position, playerPed)
 		Wait(5000)
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
 		Wait(15000)
+		v3 = GetEntityCoords(playerPed)
+		obj = GetClosestObjectOfType(v3.x, v3.y, v3.z, 100.0,`p_cs_clipboard`, false, false, false)
+		delete_object(obj)
 	end
 	ClearPedTasksImmediately(playerPed)
+end
+
+function delete_object(obj)
+	SetEntityAsMissionEntity(obj, true, true)
+	DeleteObject(obj)
+	SetEntityAsNoLongerNeeded(obj)
 end
 
 function run_cleaner_animation()
@@ -128,7 +140,7 @@ end
 
 function communicate_job_progression(job, points_worked_on, progression_step)
 	if  math.fmod(points_worked_on, progression_step) == 0 then
-		TriggerEvent('notifications', "#29c501", job, "You've worked a total of "..points_worked_on.." points")
+		ESX.ShowNotification( job .. ", You've worked a total of "..points_worked_on.." points")
 	end
 end
 
@@ -137,7 +149,7 @@ function stop_work(job, points_worked_on, progression_step, multiplier)
 	getOutOfUniform()
 	reward = math.floor(points_worked_on / progression_step)
 	if multiplier then reward = reward * multiplier end
-	TriggerEvent('notifications', "#29c501", job, "You've become ".. reward .."$ richer")
+	ESX.ShowNotification( job .. ", You've become ".. reward .."$ richer")
 	TriggerServerEvent("giveReward:paletoWorks", reward)
 end
 
