@@ -2,7 +2,7 @@
 Basic local paletp jobs and a paleto used car lot for ESX.
 Just trying to give the top of the map some love.
 
-Requires esx_skin (and possibly the skinchanger?) esx_jobs and rc_notify, which I'll replace for a normal notification soon enough.
+Requires esx_skin, skinchanger, esx_jobs, esx_status and my own esx_needtosleep
 
 Thanks to ESX-CityWorks and RC-Mining Job, which were the scripts I looked into to learn the ropes.
 
