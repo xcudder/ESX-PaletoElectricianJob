@@ -1,6 +1,41 @@
 local slots, data = {}, false
 local possible_cars = Config.used_car_lot.cars
 local buy_prompt = "Press ~INPUT_CONTEXT~ to buy this piece of junk for 12k"
+local working = false, false
+local counter = 0
+
+Citizen.CreateThread(function()
+	v3 = vector3(-250.26, 6205.51, 31.49)
+	while true do
+		Wait(0)
+		drawWorkMarker(v3)
+		if(coordinates_close_enough(v3) and not working) then
+			working = true
+			SetEntityHeading(PlayerPedId(), 40.0)
+			DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
+			if(IsControlJustReleased(1, 38)) then
+				TaskStartScenarioInPlace(PlayerPedId(), "WORLD_HUMAN_CAR_PARK_ATTENDANT", 0, true);
+			end
+		else
+			if(coordinates_close_enough(v3) and working) then
+				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop ~r~working")
+				if(IsControlJustReleased(1, 38)) then
+					ClearPedTasksImmediately(PlayerPedId())
+				end
+			end
+		end
+	 end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(120000)
+		if(working) then
+			ESX.ShowNotification("You got 1 dolar")
+			TriggerServerEvent("giveReward:paletoWorks", 1)
+		end
+	end
+end)
 
 Citizen.CreateThread(function()
 	setupBlip({

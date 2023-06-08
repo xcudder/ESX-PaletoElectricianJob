@@ -113,6 +113,7 @@ function run_factory_helper_animation(work_position, playerPed)
 		SetEntityHeading(playerPed, 375.0)
 		Wait(10000)
 		StopAnimTask(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9')
+		Citizen.Wait(100)
 		RemoveAnimDict("abigail_mcs_1_concat-9")
 	else
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
@@ -137,6 +138,7 @@ end
 function generate_new_work_order(job_config, current_work_blip, cb)
 	if current_work_blip then RemoveBlip(current_work_blip) end
 	local new_work = job_config.WorkPoints[math.random(#job_config.WorkPoints)]
+	ClearAreaOfPeds(new_work.x, new_work.y, new_work.z, 1.5)
 	cb(new_work, AddBlipForCoord(new_work.x, new_work.y, 30.0))
 end
 

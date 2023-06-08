@@ -10,7 +10,7 @@ Config.paleto_electrician = {
 
 	Clothes = {
 		male = {
-			['arms_1'] = 2, ['glasses_1'] = 0,
+			['arms'] = 2, ['glasses_1'] = 0,
 			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 65,   ['torso_2'] = 3,
@@ -36,7 +36,7 @@ Config.paleto_factory_helper = {
 
 	Clothes = {
 		male = {
-			['arms_1'] = 2, ['glasses_1'] = 0,
+			['arms'] = 2, ['glasses_1'] = 0,
 			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 56,   ['torso_2'] = 0,
@@ -72,7 +72,7 @@ Config.paleto_cleaner = {
 	},
 	Clothes = {
 		male = {
-			['arms_1'] = 2, ['glasses_1'] = 0,
+			['arms'] = 2, ['glasses_1'] = 0,
 			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 65,   ['torso_2'] = 3,
@@ -96,13 +96,17 @@ Config.paleto_police_intern = {
 		{x = -446.48, y = 6008.81, z = 30.72},
 		{x = -444.73, y = 6010.51, z = 30.72},
 		{x = -444.73, y = 6010.51, z = 30.72},
+		{x = -446.48, y = 6008.81, z = 30.72},
+		{x = -446.48, y = 6008.81, z = 30.72},
+		{x = -444.73, y = 6010.51, z = 30.72},
+		{x = -444.73, y = 6010.51, z = 30.72},
 		{x = -449.69, y = 6010.19, z = 30.72, type = 'coffee'},
 		{x = -447.52, y = 6013.59, z = 30.72, type = 'lunch_break'}
 	},
 
 	Clothes = {
 		male = {
-			['arms_1'] = 11, ['glasses_1'] = 0,
+			['arms'] = 11, ['glasses_1'] = 0,
 			['chain_1'] = 0,
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 13,   ['torso_2'] = 0,
