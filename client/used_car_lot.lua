@@ -1,26 +1,33 @@
 local slots, data = {}, false
 local possible_cars = Config.used_car_lot.cars
 local buy_prompt = "Press ~INPUT_CONTEXT~ to buy this piece of junk for 12k"
-local working = false, false
+local working, animated = false, false
 local counter = 0
 
 Citizen.CreateThread(function()
-	v3 = vector3(-250.26, 6205.51, 31.49)
+	v3 = vector3(-250.26, 6205.51, 30.49)
 	while true do
 		Wait(0)
 		drawWorkMarker(v3)
 		if(coordinates_close_enough(v3) and not working) then
-			working = true
-			SetEntityHeading(PlayerPedId(), 40.0)
-			DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
+			DisplayHelpText("Press ~INPUT_CONTEXT~ to start ~r~working")
+			if animated then
+				ClearPedTasksImmediately(PlayerPedId())
+				animated = false
+			end
 			if(IsControlJustReleased(1, 38)) then
-				TaskStartScenarioInPlace(PlayerPedId(), "WORLD_HUMAN_CAR_PARK_ATTENDANT", 0, true);
+				working = true
 			end
 		else
 			if(coordinates_close_enough(v3) and working) then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop ~r~working")
+				if not animated then
+					TaskStartScenarioInPlace(PlayerPedId(), "WORLD_HUMAN_CAR_PARK_ATTENDANT", 0, true);
+					SetEntityHeading(PlayerPedId(), 130.0)
+					animated = true
+				end
 				if(IsControlJustReleased(1, 38)) then
-					ClearPedTasksImmediately(PlayerPedId())
+					working = false
 				end
 			end
 		end
