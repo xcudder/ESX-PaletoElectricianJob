@@ -80,10 +80,10 @@ Citizen.CreateThread(function()
 		if entity_close_enough(quest_giver) then
 			if PlayerData.job and PlayerData.job.name ~= 'cleaner' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
-				if(IsControlJustReleased(1, 38)) then TriggerServerEvent('toggleJob:paletoWorks', 'cleaner') end
+				if(IsControlJustReleased(1, 38)) then start_job('cleaner', 850) end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
-				if(IsControlJustReleased(1, 38)) then stop_work('cleaner', points_worked_on, 5, 2) end
+				if(IsControlJustReleased(1, 38)) then stop_work('cleaner', points_worked_on, 4, 2) end
 			end
 		end
 	end

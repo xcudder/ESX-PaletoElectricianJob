@@ -66,10 +66,10 @@ Citizen.CreateThread(function()
 		 if entity_close_enough(quest_giver) then
 			if PlayerData.job and PlayerData.job.name ~= 'factory_helper' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
-				if(IsControlJustReleased(1, 38))then TriggerServerEvent('toggleJob:paletoWorks', 'factory_helper') end
+				if(IsControlJustReleased(1, 38))then start_job('factory_helper', 550) end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
-				if(IsControlJustReleased(1, 38))then stop_work('factory_helper', points_worked_on, 4) end
+				if(IsControlJustReleased(1, 38))then stop_work('factory_helper', points_worked_on, 3) end
 			end
 		end
 	end

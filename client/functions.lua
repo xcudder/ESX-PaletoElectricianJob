@@ -17,6 +17,36 @@ function display_work_cta(isWorking, random_work_position)
 	return work_player_distance < 1.5 and isWorking == false
 end
 
+
+function start_job(job_name, needed_points)
+	if not needed_points then needed_points = 0 end
+	total_player_points = get_player_work_experience('total')
+	difference = needed_points - total_player_points
+	if (difference > 0) then return ESX.ShowNotification("You need more " .. difference .. " work point(s) to work here") end
+	ESX.ShowNotification("You started your shift")
+	TriggerServerEvent('toggleJob:paletoWorks', job_name)
+end
+
+function get_player_work_experience(query, param)
+	local player_work_experience, retval = false, 0
+
+	ESX.TriggerServerCallback("getWorkExperience:paletoWorks", function(work_experience) player_work_experience = work_experience end)
+	while not player_work_experience do Wait(100) end
+
+	if query == 'job' and param then
+		for i = 1, #player_work_experience do
+			if player_work_experience[i].job_name == param then
+				retval = player_work_experience[i].work_points
+			end
+		end
+	elseif query == 'total' then
+		for i = 1, #player_work_experience do
+			retval = retval +  player_work_experience[i].work_points
+		end
+	end
+	return retval
+end
+
 function drawWorkMarker(wp, marker_type)
 	if not marker_type then marker_type = 1 end
 	DrawMarker(marker_type, wp.x, wp.y, wp.z,0, 0, 0, 0, 0, 0, 1.0, 1.0, 1.0, 255, 255, 255, 155, 0, 0, 2, 0, 0, 0, 0)

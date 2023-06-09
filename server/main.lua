@@ -41,6 +41,12 @@ ESX.RegisterServerCallback('getProperties:paletoWorks', function(source, cb)
 	if PropertiesList then cb(PropertiesList) end
 end)
 
+ESX.RegisterServerCallback('getWorkExperience:paletoWorks', function(source, cb)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	local users = MySQL.query.await('SELECT * FROM users WHERE identifier = ?', {xPlayer.identifier})
+	cb(json.decode(users[1].work_experience))
+end)
+
 RegisterNetEvent('enterProperty:paletoWorks')
 AddEventHandler('enterProperty:paletoWorks', function(interiorType, outside)
 	local xPlayer = ESX.GetPlayerFromId(source)
