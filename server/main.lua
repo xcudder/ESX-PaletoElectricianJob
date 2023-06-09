@@ -1,9 +1,32 @@
 ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent("giveReward:paletoWorks")
-AddEventHandler("giveReward:paletoWorks", function(reward)
+AddEventHandler("giveReward:paletoWorks", function(reward, job_name, work_points)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	xPlayer.addAccountMoney('money', reward)
+
+	MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = ?', {xPlayer.identifier}, function(result)
+		if result == nil or #result == 0 then return end
+		result = result[1]
+
+		local jobs, correct_job
+
+		if result.work_experience ~= nil and #result.work_experience > 0 then
+			jobs = json.decode(result.work_experience)
+			for i=1, #jobs, 1 do
+				if(jobs[i].job_name == job_name) then
+					jobs[i].work_points = jobs[i].work_points + work_points
+				end
+			end
+		else
+			jobs = {{job_name = job_name, work_points = work_points}}
+		end
+
+		MySQL.update('UPDATE users SET work_experience = @jobs WHERE identifier = @identifier', {
+			['@jobs'] = json.encode(jobs),
+			['@identifier'] = xPlayer.identifier
+		})
+	end)
 end)
 
 

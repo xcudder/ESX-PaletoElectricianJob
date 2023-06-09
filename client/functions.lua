@@ -154,7 +154,7 @@ function stop_work(job, points_worked_on, progression_step, multiplier)
 	reward = math.floor(points_worked_on / progression_step)
 	if multiplier then reward = reward * multiplier end
 	ESX.ShowNotification( job .. ", You've become ".. reward .."$ richer")
-	TriggerServerEvent("giveReward:paletoWorks", reward)
+	TriggerServerEvent("giveReward:paletoWorks", reward, job, points_worked_on)
 end
 
 function putUniformOn(clothes_config)
