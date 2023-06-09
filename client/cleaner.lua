@@ -29,6 +29,7 @@ AddEventHandler('esx:playerLoaded', function(xPlayer)
 	if isInside then TriggerServerEvent("enterProperty:paletoWorks", false, local_cfg.QuestGiver) end
 
 	if PlayerData.job and PlayerData.job.name == 'cleaner' then
+		PlayerData.job_points = get_player_work_experience('job',PlayerData.job.name)
 		putUniformOn(local_cfg.Clothes)
 		generate_new_outer_work_order(true)
 	end
@@ -37,6 +38,8 @@ end)
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	PlayerData.job = job
+	PlayerData.job_points = get_player_work_experience('job',job.name)
+
 	-- below is if something went wrong... go to the quest giver
 	if isInside then TriggerServerEvent("enterProperty:paletoWorks", false, local_cfg.QuestGiver) end
 
@@ -113,7 +116,7 @@ function cleaner_working(work_index)
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
 		isWorking = true
-		run_work_animations('cleaner', workSpots[i], GetPlayerPed(-1))
+		run_work_animations('cleaner', workSpots[work_index], PlayerData.job_points)
 		isWorking , workSpots[work_index].active = false, 0
 		houseWorkedPoints = houseWorkedPoints + 1
 		points_worked_on = points_worked_on + 1

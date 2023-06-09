@@ -70,19 +70,23 @@ function create_task_giver(work_cfg, quest_giver_scenario)
 	return quest_giver
 end
 
-function run_work_animations(work, work_position, playerPed)
+function run_work_animations(work, work_position, points)
 	if work == 'cleaner' then
-		run_cleaner_animation(work_position, playerPed)
+		run_cleaner_animation(work_position, points)
 	elseif work == 'electrician' then
-		run_electrician_animation(work_position, playerPed)
+		run_electrician_animation(work_position, points)
 	elseif work == 'factory_helper' then
-		run_factory_helper_animation(work_position, playerPed)
+		run_factory_helper_animation(work_position, points)
 	elseif work == 'police_intern' then
-		run_intern_animation(work_position, playerPed)
+		run_intern_animation(work_position, points)
 	end
 end
 
-function run_intern_animation(work_position, playerPed)
+function run_intern_animation(work_position, workPoints)
+	local playerPed = PlayerPedId()
+	local clipboard_work_animation_time = 15000 - workPoints
+	local digitalizing_work_animation_time = 5000 - workPoints
+
 	if work_position.type == 'coffee' then
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_AA_COFFEE", 0, true)
 		Wait(10000)
@@ -96,9 +100,9 @@ function run_intern_animation(work_position, playerPed)
 		TriggerEvent("esx_status:add", 'hunger', 100000)
 	else
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_TOURIST_MOBILE", 0, true)
-		Wait(5000)
+		Wait(digitalizing_work_animation_time)
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-		Wait(15000)
+		Wait(clipboard_work_animation_time)
 		v3 = GetEntityCoords(playerPed)
 		obj = GetClosestObjectOfType(v3.x, v3.y, v3.z, 100.0,`p_cs_clipboard`, false, false, false)
 		delete_object(obj)
@@ -106,17 +110,13 @@ function run_intern_animation(work_position, playerPed)
 	ClearPedTasksImmediately(playerPed)
 end
 
-function delete_object(obj)
-	SetEntityAsMissionEntity(obj, true, true)
-	DeleteObject(obj)
-	SetEntityAsNoLongerNeeded(obj)
-end
+function run_cleaner_animation(work_position, workPoints) -- right now unused
+	local playerPed = PlayerPedId()
 
-function run_cleaner_animation()
 	RequestAnimDict("amb@world_human_janitor@male@idle_a")
 	Wait(100)
 	local broom = CreateObject(GetHashKey("prop_tool_broom2"), 0, 0, 0, true, true, true)
-	AttachEntityToEntity(broom, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 0x188E), 0.6, 0.7, 0.5, -150.0, 100.0, 220.0, true, true, false, true, 1, true)
+	AttachEntityToEntity(broom, playerPed, GetPedBoneIndex(playerPed, 0x188E), 0.6, 0.7, 0.5, -150.0, 100.0, 220.0, true, true, false, true, 1, true)
 	TaskPlayAnim(GetPlayerPed(-1), 'amb@world_human_janitor@male@idle_a', 'idle_a', 12.0, 4.0, 7200, 5, 0.2, false, false, false)
 	Wait(7200)
 	DetachEntity(broom, 1, true)
@@ -125,31 +125,44 @@ function run_cleaner_animation()
 	RemoveAnimDict("amb@world_human_janitor@male@idle_a")
 end
 
-function run_electrician_animation(work_position, playerPed)
+function run_electrician_animation(work_position, workPoints) --work position still unused
+	local each_animation_time = 10000 - workPoints
+	local playerPed = PlayerPedId()
+
 	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-	Wait(10000)
-	TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_POLICE_INVESTIGATE", 0, true)
-	Wait(10000)
+	Wait(each_animation_time)
+	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_INSPECT_STAND", 0, true)
+	Wait(each_animation_time)
 	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
-	Wait(10000)
+	Wait(each_animation_time)
 	ClearPedTasksImmediately(playerPed)
 end
 
-function run_factory_helper_animation(work_position, playerPed)
+function run_factory_helper_animation(work_position, workPoints)
+	local computer_work_animation_time = 10000 - workPoints
+	local clipboard_work_animation_time = 15000 - workPoints
+	local playerPed = PlayerPedId()
+
 	if work_position.type == 'computer' then
 		RequestAnimDict("abigail_mcs_1_concat-9")
 		Citizen.Wait(100)
 		Citizen.CreateThread(function()
-			TaskPlayAnim(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9', 12.0, 12.0, 10000, 81, 0.0, 1, 1, 1)
+			TaskPlayAnim(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9', 12.0, 12.0, computer_work_animation_time, 81, 0.0, 1, 1, 1)
 			SetEntityHeading(playerPed, 375.0)
 		end)
-		Wait(10000)
+		Wait(computer_work_animation_time)
 		RemoveAnimDict("abigail_mcs_1_concat-9")
 	else
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-		Wait(15000)
+		Wait(clipboard_work_animation_time)
 		ClearPedTasksImmediately(playerPed)
 	end
+end
+
+function delete_object(obj)
+	SetEntityAsMissionEntity(obj, true, true)
+	DeleteObject(obj)
+	SetEntityAsNoLongerNeeded(obj)
 end
 
 function entity_close_enough(second_entity, overwrite_radius)
