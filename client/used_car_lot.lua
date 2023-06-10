@@ -5,7 +5,7 @@ local working, animated = false, false
 local counter = 0
 
 Citizen.CreateThread(function()
-	v3 = vector3(-250.26, 6205.51, 30.49)
+	local v3 = vector3(-250.26, 6205.51, 30.49)
 	while true do
 		Wait(0)
 		drawWorkMarker(v3)

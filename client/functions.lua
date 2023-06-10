@@ -18,7 +18,7 @@ function display_work_cta(isWorking, random_work_position)
 end
 
 
-function start_job(job_name, needed_points)
+function start_work(job_name, needed_points)
 	if not needed_points then needed_points = 0 end
 	total_player_points = get_player_work_experience('total')
 	difference = needed_points - total_player_points
@@ -83,19 +83,19 @@ function run_work_animations(work, work_position, points)
 end
 
 function run_intern_animation(work_position, workPoints)
+	setPlayerAtWorkPosition(work_position)
+
 	local playerPed = PlayerPedId()
 	local clipboard_work_animation_time = 15000 - workPoints
 	local digitalizing_work_animation_time = 5000 - workPoints
 
 	if work_position.type == 'coffee' then
-		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_AA_COFFEE", 0, true)
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_AA_COFFEE", work_position.heading, true)
 		Wait(10000)
 		TriggerEvent("esx_status:remove", 'sleepiness', 20000)
-		v3 = GetEntityCoords(playerPed)
-		obj = GetClosestObjectOfType(v3.x, v3.y, v3.z, 100.0,`p_amb_coffeecup_01`, false, false, false)
-		delete_object(obj)
+		
 	elseif work_position.type == 'lunch_break' then
-		TaskStartScenarioAtPosition(playerPed, "WORLD_HUMAN_SEAT_WALL_EATING", -447.80, 6013.20, 31.72, 2, 10000, 0, 1)
+		TaskStartScenarioAtPosition(playerPed, "WORLD_HUMAN_SEAT_WALL_EATING", -447.80, 6013.20, 31.72, work_position.heading, 10000, 0, 1)
 		Wait(10000)
 		TriggerEvent("esx_status:add", 'hunger', 100000)
 	else
@@ -103,11 +103,13 @@ function run_intern_animation(work_position, workPoints)
 		Wait(digitalizing_work_animation_time)
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
 		Wait(clipboard_work_animation_time)
-		v3 = GetEntityCoords(playerPed)
-		obj = GetClosestObjectOfType(v3.x, v3.y, v3.z, 100.0,`p_cs_clipboard`, false, false, false)
-		delete_object(obj)
 	end
+
 	ClearPedTasksImmediately(playerPed)
+
+	delete_object(`p_amb_coffeecup_01`)
+	delete_object(`p_cs_clipboard`)
+	delete_object(`prop_amb_donut`)
 end
 
 function run_cleaner_animation(work_position, workPoints) -- right now unused
@@ -126,19 +128,25 @@ function run_cleaner_animation(work_position, workPoints) -- right now unused
 end
 
 function run_electrician_animation(work_position, workPoints) --work position still unused
+	setPlayerAtWorkPosition(work_position)
+
 	local each_animation_time = 10000 - workPoints
 	local playerPed = PlayerPedId()
 
 	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
 	Wait(each_animation_time)
 	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_INSPECT_STAND", 0, true)
+	delete_object(`p_cs_clipboard`)
 	Wait(each_animation_time)
 	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
 	Wait(each_animation_time)
 	ClearPedTasksImmediately(playerPed)
+	delete_object(`prop_weld_torch`)
 end
 
 function run_factory_helper_animation(work_position, workPoints)
+	setPlayerAtWorkPosition(work_position)
+
 	local computer_work_animation_time = 10000 - workPoints
 	local clipboard_work_animation_time = 15000 - workPoints
 	local playerPed = PlayerPedId()
@@ -156,10 +164,13 @@ function run_factory_helper_animation(work_position, workPoints)
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
 		Wait(clipboard_work_animation_time)
 		ClearPedTasksImmediately(playerPed)
+		delete_object(`p_cs_clipboard`)
 	end
 end
 
-function delete_object(obj)
+function delete_object(obj_hash)
+	v3 = GetEntityCoords(PlayerPedId())
+	local obj = GetClosestObjectOfType(v3.x, v3.y, v3.z, 100.0, obj_hash, false, false, false)
 	SetEntityAsMissionEntity(obj, true, true)
 	DeleteObject(obj)
 	SetEntityAsNoLongerNeeded(obj)
@@ -220,4 +231,9 @@ function DisplayHelpText(str)
 	SetTextComponentFormat("STRING")
 	AddTextComponentString(str)
 	DisplayHelpTextFromStringLabel(0, 0, 1, -1)
+end
+
+function setPlayerAtWorkPosition(v3)
+	SetEntityCoords(PlayerPedId(), v3.x, v3.y, v3.z)
+	SetEntityHeading(PlayerPedId(), v3.heading)
 end

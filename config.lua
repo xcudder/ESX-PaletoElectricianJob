@@ -2,10 +2,10 @@ Config = {}
 
 Config.paleto_electrician = {
 	WorkPoints = {
-		{x = -285.94, y = 6020.37, z = 30.47},
-		{x = -289.64, y = 6023.75, z = 30.47},
-		{x = -296.59, y = 6019.99, z = 30.47},
-		{x = -293.35, y = 6016.58, z = 30.47}
+		{x = -285.94, y = 6020.37, z = 30.47, heading = 40.14},
+		{x = -289.64, y = 6023.75, z = 30.47, heading = 41.03},
+		{x = -296.59, y = 6019.99, z = 30.47, heading = 128.39},
+		{x = -293.35, y = 6016.58, z = 30.47, heading = 134.39}
 	},
 
 	Clothes = {
@@ -29,9 +29,9 @@ Config.paleto_electrician = {
 
 Config.paleto_factory_helper = {
 	WorkPoints = {
-		{x = -86.42, y = 6237.5, z = 30.09, type = 'computer'},
-		{x = -77.95, y = 6224.49, z = 30.09, type = 'computer'},
-		{x = -69.34, y = 6256.13, z = 30.09, type = 'archive'}
+		{x = -86.42, y = 6237.5, z = 30.09, heading = 50.24, type = 'computer'},
+		{x = -77.95, y = 6224.49, z = 30.09, heading = 24.60, type = 'computer'},
+		{x = -69.34, y = 6256.13, z = 30.09, heading = 41.42, type = 'archive'}
 	},
 
 	Clothes = {
@@ -53,7 +53,6 @@ Config.paleto_factory_helper = {
 		z = 30.26
 	}
 }
-
 
 Config.paleto_cleaner = {
 	WorkPoints = {
@@ -92,16 +91,16 @@ Config.paleto_cleaner = {
 Config.paleto_police_intern = {
 	WorkPoints = {
 		-- some duplicates are a lazy way of increasing probability
-		{x = -446.48, y = 6008.81, z = 30.72},
-		{x = -446.48, y = 6008.81, z = 30.72},
-		{x = -444.73, y = 6010.51, z = 30.72},
-		{x = -444.73, y = 6010.51, z = 30.72},
-		{x = -446.48, y = 6008.81, z = 30.72},
-		{x = -446.48, y = 6008.81, z = 30.72},
-		{x = -444.73, y = 6010.51, z = 30.72},
-		{x = -444.73, y = 6010.51, z = 30.72},
-		{x = -449.69, y = 6010.19, z = 30.72, type = 'coffee'},
-		{x = -447.52, y = 6013.59, z = 30.72, type = 'lunch_break'}
+		{x = -446.48, y = 6008.81, z = 30.72, heading = 219.52},
+		{x = -446.48, y = 6008.81, z = 30.72, heading = 219.52},
+		{x = -444.73, y = 6010.51, z = 30.72, heading = 219.52},
+		{x = -444.73, y = 6010.51, z = 30.72, heading = 219.52},
+		{x = -446.48, y = 6008.81, z = 30.72, heading = 219.52},
+		{x = -446.48, y = 6008.81, z = 30.72, heading = 219.52},
+		{x = -444.73, y = 6010.51, z = 30.72, heading = 219.52},
+		{x = -444.73, y = 6010.51, z = 30.72, heading = 219.52},
+		{x = -449.69, y = 6010.19, z = 30.72, heading = 131.30, type = 'coffee'},
+		{x = -447.52, y = 6013.59, z = 30.72, heading = 308.07, type = 'lunch_break'}
 	},
 
 	Clothes = {

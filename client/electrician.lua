@@ -69,7 +69,7 @@ Citizen.CreateThread(function()
 		 if entity_close_enough(quest_giver) then
 			if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
-				if(IsControlJustReleased(1, 38))then start_job('electrician', 150) end
+				if(IsControlJustReleased(1, 38))then start_work('electrician', 150) end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
 				if(IsControlJustReleased(1, 38))then stop_work('electrician', points_worked_on, 4) end

@@ -69,7 +69,7 @@ Citizen.CreateThread(function()
 		 if entity_close_enough(quest_giver) then
 			if PlayerData.job and PlayerData.job.name ~= 'factory_helper' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
-				if(IsControlJustReleased(1, 38))then start_job('factory_helper', 550) end
+				if(IsControlJustReleased(1, 38))then start_work('factory_helper', 550) end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
 				if(IsControlJustReleased(1, 38))then stop_work('factory_helper', points_worked_on, 3) end
@@ -107,3 +107,7 @@ function factory_helper_working()
 		communicate_job_progression('Worker', points_worked_on, 4)
 	end)
 end
+
+RegisterCommand("get_factory_work_position", function(source)
+	ESX.ShowNotification(json.encode(random_work_position))
+end)
