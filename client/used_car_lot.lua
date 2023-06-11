@@ -8,8 +8,9 @@ Citizen.CreateThread(function()
 	local v3 = vector3(-250.26, 6205.51, 30.49)
 	while true do
 		Wait(0)
-		drawWorkMarker(v3)
+
 		if(coordinates_close_enough(v3) and not working) then
+			drawWorkMarker(v3)
 			DisplayHelpText("Press ~INPUT_CONTEXT~ to start ~r~working")
 			if animated then
 				ClearPedTasksImmediately(PlayerPedId())
@@ -31,7 +32,11 @@ Citizen.CreateThread(function()
 				end
 			end
 		end
-	 end
+
+		if not coordinates_close_enough(v3) and working then -- don't cancel animation and leave
+			working = false
+		end
+	end
 end)
 
 Citizen.CreateThread(function()
