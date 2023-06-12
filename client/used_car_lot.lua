@@ -9,8 +9,9 @@ Citizen.CreateThread(function()
 	while true do
 		Wait(0)
 
+		if not working then drawWorkMarker(v3) end
+
 		if(coordinates_close_enough(v3) and not working) then
-			drawWorkMarker(v3)
 			DisplayHelpText("Press ~INPUT_CONTEXT~ to start ~r~working")
 			if animated then
 				ClearPedTasksImmediately(PlayerPedId())
@@ -42,6 +43,7 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Wait(120000)
+
 		if(working) then
 			ESX.ShowNotification("You got 1 dolar")
 			TriggerServerEvent("giveReward:paletoWorks", 1, "misc", 2)

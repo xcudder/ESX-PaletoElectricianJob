@@ -7,12 +7,14 @@ AddEventHandler("giveReward:paletoWorks", function(reward, job_name, work_points
 
 	MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = ?', {xPlayer.identifier}, function(result)
 		if result == nil or #result == 0 then return end
-		result = result[1]
+		local user = result[1]
 
 		local jobs, correct_job
 
-		if result.work_experience ~= nil and #result.work_experience > 0 then
-			jobs = json.decode(result.work_experience)
+
+		if user.work_experience ~= nil and #json.decode(user.work_experience) > 0 then
+			xPlayer.showNotification("first conditional")
+			jobs = json.decode(user.work_experience)
 			for i=1, #jobs, 1 do
 				if(jobs[i].job_name == job_name) then
 					jobs[i].work_points = jobs[i].work_points + work_points
