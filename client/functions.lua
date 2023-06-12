@@ -198,21 +198,20 @@ end
 
 function trigger_job_progression(job, points_worked_on, progression_step, multiplier)
 	if  math.fmod(points_worked_on, progression_step) == 0 then
-		ESX.ShowNotification( job .. ", You've worked a total of "..points_worked_on.." points")
-		reward(job, points_worked_on, progression_step, multiplier)
+		ESX.ShowNotification("You've worked a total of "..points_worked_on.." points since the start of your shift.")
+		reward(job, progression_step, multiplier)
 	end
+end
+
+function reward(job, progression_step, multiplier) -- to be ran on step progression
+	local reward = 1
+	if multiplier then reward = reward * multiplier end
+	TriggerServerEvent("giveReward:paletoWorks", reward, job, progression_step)
 end
 
 function stop_work(job)
 	TriggerServerEvent('toggleJob:paletoWorks', 'unemployed')
 	getOutOfUniform()
-end
-
-function reward(job, points_worked_on, progression_step, multiplier)
-	reward = math.floor(points_worked_on / progression_step)
-	if multiplier then reward = reward * multiplier end
-	ESX.ShowNotification( job .. ", You've become ".. reward .."$ richer")
-	TriggerServerEvent("giveReward:paletoWorks", reward, job, points_worked_on)
 end
 
 function putUniformOn(clothes_config)

@@ -103,6 +103,6 @@ function police_intern_working()
 			random_work_position_blip = new_blip
 		end)
 		points_worked_on = points_worked_on + 1
-		trigger_job_progression('Intern', points_worked_on, 10)
+		trigger_job_progression('police_intern', points_worked_on, 10)
 	end)
 end

@@ -119,7 +119,7 @@ function cleaner_working(work_index)
 		isWorking , workSpots[work_index].active = false, 0
 		houseWorkedPoints = houseWorkedPoints + 1
 		points_worked_on = points_worked_on + 1
-		trigger_job_progression('Cleaner', points_worked_on, 5, 2)
+		trigger_job_progression('cleaner', points_worked_on, 5, 2)
 		if totalWorkPointsInThisHouse == houseWorkedPoints then -- we're done, get out
 			TriggerServerEvent("enterProperty:paletoWorks", false, random_property.Entrance)
 			isInside = false
