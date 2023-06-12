@@ -10,17 +10,22 @@ AddEventHandler("giveReward:paletoWorks", function(reward, job_name, work_points
 		local user = result[1]
 
 		local jobs, correct_job
-
+		local previous_job = false
 
 		if user.work_experience ~= nil and #json.decode(user.work_experience) > 0 then
 			jobs = json.decode(user.work_experience)
 			for i=1, #jobs, 1 do
 				if(jobs[i].job_name == job_name) then
+					previous_job = true
 					jobs[i].work_points = jobs[i].work_points + work_points
 				end
 			end
 		else
 			jobs = {{job_name = job_name, work_points = work_points}}
+		end
+
+		if not previous_job then
+			jobs[#jobs + 1] = {job_name = job_name, work_points = work_points}
 		end
 
 		MySQL.update('UPDATE users SET work_experience = @jobs WHERE identifier = @identifier', {
