@@ -13,7 +13,6 @@ AddEventHandler("giveReward:paletoWorks", function(reward, job_name, work_points
 
 
 		if user.work_experience ~= nil and #json.decode(user.work_experience) > 0 then
-			xPlayer.showNotification("first conditional")
 			jobs = json.decode(user.work_experience)
 			for i=1, #jobs, 1 do
 				if(jobs[i].job_name == job_name) then
