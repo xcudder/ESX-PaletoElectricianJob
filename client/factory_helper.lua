@@ -2,7 +2,6 @@ local PlayerData = {}
 
 --counters
 local points_worked_on = 0
-local reward = 0
 
 -- boilerplating
 local quest_giver = false
@@ -104,7 +103,7 @@ function factory_helper_working()
 			random_work_position_blip = new_blip
 		end)
 		points_worked_on = points_worked_on + 1
-		communicate_job_progression('Worker', points_worked_on, 4)
+		trigger_job_progression('Worker', points_worked_on, 4)
 	end)
 end
 
