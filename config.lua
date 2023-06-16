@@ -129,3 +129,6 @@ Config.used_car_lot = {
 		'tornado3', 'surfer2'
 	}
 }
+
+Config.mugging_chance = 10
+Config.armed_mugger = false

@@ -20,5 +20,6 @@ client_scripts {
 	'client/cleaner.lua',
 	'client/police_intern.lua',
 	'client/commands.lua',
-	'client/used_car_lot.lua'
+	'client/used_car_lot.lua',
+	'client/hostiles.lua'
 }
