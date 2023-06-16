@@ -37,9 +37,13 @@ end)
 
 
 RegisterNetEvent('toggleJob:paletoWorks')
-AddEventHandler('toggleJob:paletoWorks', function(job_name)
+AddEventHandler('toggleJob:paletoWorks', function(job_name, job_specific_points)
 	local xPlayer = ESX.GetPlayerFromId(source)
-	if xPlayer and ESX.DoesJobExist(job_name, 0) then xPlayer.setJob(job_name , 0) end
+	local grade = 0
+
+	if job_name == 'electrician' and job_specific_points >= 4000 then grade = 1 end
+
+	if xPlayer and ESX.DoesJobExist(job_name, grade) then xPlayer.setJob(job_name, grade) end
 end)
 
 ESX.RegisterServerCallback('getProperties:paletoWorks', function(source, cb)

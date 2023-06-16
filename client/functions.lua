@@ -20,11 +20,12 @@ end
 
 function start_work(job_name, needed_points)
 	if not needed_points then needed_points = 0 end
-	total_player_points = get_player_work_experience('total')
-	difference = needed_points - total_player_points
+	local total_player_points = get_player_work_experience('total')
+	local difference = needed_points - total_player_points
 	if (difference > 0) then return ESX.ShowNotification("You need more " .. difference .. " work point(s) to work here") end
 	ESX.ShowNotification("You started your shift")
-	TriggerServerEvent('toggleJob:paletoWorks', job_name)
+	local job_specific_points = get_player_work_experience('job', job_name)
+	TriggerServerEvent('toggleJob:paletoWorks', job_name, job_specific_points)
 end
 
 function get_player_work_experience(query, param)

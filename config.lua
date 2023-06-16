@@ -9,15 +9,29 @@ Config.paleto_electrician = {
 	},
 
 	Clothes = {
-		male = {
-			['arms'] = 2, ['glasses_1'] = 0,
-			['chain_1'] = 0,
-			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
-			['torso_1'] = 65,   ['torso_2'] = 3,
-			['pants_1'] = 38, ['pants_2'] = 3,
-			['shoes_1'] = 51
+		{ -- grade 0
+			male = {
+				['arms'] = 2, ['glasses_1'] = 0,
+				['chain_1'] = 0,
+				['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+				['torso_1'] = 65,   ['torso_2'] = 3,
+				['pants_1'] = 38, ['pants_2'] = 3,
+				['shoes_1'] = 51
+			},
+			female = {}
 		},
-		female = {}
+		{ -- grade 1
+			male = {
+				['arms'] = 63, ['glasses_1'] = 0,
+				['chain_1'] = 0,
+				['tshirt_1'] = 15,  ['tshirt_2'] = 0,
+				['torso_1'] = 66,   ['torso_2'] = 1,
+				['pants_1'] = 39, ['pants_2'] = 1,
+				['shoes_1'] = 31, ['shoes_2'] = 2,
+				['helmet_1'] = 76
+			},
+			female = {}
+		}
 	},
 	QuestGiver = {
 		NPCHash	= 0x867639D1,
