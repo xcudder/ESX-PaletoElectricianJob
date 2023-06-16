@@ -11,7 +11,7 @@ Citizen.CreateThread(function()
 			mugger = false
 		end
 
-		if IsPedOnFoot(player) then
+		if IsPedOnFoot(player) and GetClockHours() > 22 then
 			pv3 = GetEntityCoords(player)
 			near = 0
 
