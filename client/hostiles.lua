@@ -2,6 +2,7 @@ local atm_models = {`prop_fleeca_atm`, `prop_atm_01`, `prop_atm_02`, `prop_atm_0
 local player = PlayerPedId()
 local pv3, enemyv3, near = false, false, 0
 local mugger = false
+local hour = GetClockHours()
 
 Citizen.CreateThread(function()
 	while true do
@@ -11,7 +12,8 @@ Citizen.CreateThread(function()
 			mugger = false
 		end
 
-		if IsPedOnFoot(player) and GetClockHours() > 22 then
+		local hour = GetClockHours()
+		if IsPedOnFoot(player) and (hours > 22 or hour < 4) then
 			pv3 = GetEntityCoords(player)
 			near = 0
 
