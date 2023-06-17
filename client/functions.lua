@@ -136,7 +136,7 @@ function run_electrician_animation(work_position, workPoints) --work position st
 
 	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
 	Wait(each_animation_time)
-	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_INSPECT_STAND", 0, true)
+	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WINDOW_SHOP_BROWSE", 0, true)
 	delete_object(`p_cs_clipboard`)
 	Wait(each_animation_time)
 	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
