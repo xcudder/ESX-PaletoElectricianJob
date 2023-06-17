@@ -24,6 +24,7 @@ Citizen.CreateThread(function()
 			if(near ~= 0 and (math.random(100) <= Config.mugging_chance) and not mugger) then
 				enemyv3 = get_spawn_point_near_player(pv3)
 				mugger = create_atm_mugger(0x6A8F1F9B, enemyv3)
+				Wait(30000)
 			end
 		end
 	end
