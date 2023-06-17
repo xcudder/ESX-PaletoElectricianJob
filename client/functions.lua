@@ -216,11 +216,12 @@ function stop_work(job)
 end
 
 function putUniformOn(clothes_config)
+	if not grade then grade = 1 end
 	ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
 		if skin.sex == 0 then
 			TriggerEvent('skinchanger:loadClothes', skin, clothes_config.male)
 		elseif skin.sex == 1 then
-			TriggerEvent('skinchanger:loadClothes', skin, clothes_config.Clothes.female)
+			TriggerEvent('skinchanger:loadClothes', skin, clothes_config.female)
 		end
 	end)
 end

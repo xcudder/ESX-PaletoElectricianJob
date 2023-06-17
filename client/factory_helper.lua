@@ -16,10 +16,11 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
+	local grade = 0
 	PlayerData = xPlayer
 	if PlayerData.job and PlayerData.job.name == 'factory_helper' then
 		PlayerData.job_points = get_player_work_experience('job',PlayerData.job.name)
-		putUniformOn(local_cfg.Clothes)
+		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
@@ -29,6 +30,7 @@ end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
+	local grade = 0
 	PlayerData.job = job
 	PlayerData.job_points = get_player_work_experience('job',job.name)
 
@@ -36,7 +38,7 @@ AddEventHandler('esx:setJob', function(job)
 		points_worked_on = 0
 		RemoveBlip(random_work_position_blip)
 	else
-		putUniformOn(local_cfg.Clothes)
+		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip

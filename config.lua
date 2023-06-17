@@ -48,7 +48,7 @@ Config.paleto_factory_helper = {
 		{x = -69.34, y = 6256.13, z = 30.09, heading = 41.42, type = 'archive'}
 	},
 
-	Clothes = {
+	Clothes = {{
 		male = {
 			['arms'] = 2, ['glasses_1'] = 0,
 			['chain_1'] = 0,
@@ -58,7 +58,7 @@ Config.paleto_factory_helper = {
 			['shoes_1'] = 51
 		},
 		female = {}
-	},
+	}},
 
 	QuestGiver = {
 		NPCHash = 0x62018559,
@@ -83,7 +83,7 @@ Config.paleto_cleaner = {
 			{ x = 347.01, y = -995.39, z = -100.11, active = 1 }
 		}
 	},
-	Clothes = {
+	Clothes = {{
 		male = {
 			['arms'] = 2, ['glasses_1'] = 0,
 			['chain_1'] = 0,
@@ -93,7 +93,7 @@ Config.paleto_cleaner = {
 			['shoes_1'] = 51
 		},
 		female = {}
-	},
+	}},
 	QuestGiver = {
 		NPCHash = 0xF06B849D,
 		x = 1.68,
@@ -117,7 +117,7 @@ Config.paleto_police_intern = {
 		{x = -447.52, y = 6013.59, z = 30.72, heading = 308.07, type = 'lunch_break'}
 	},
 
-	Clothes = {
+	Clothes = {{
 		male = {
 			['arms'] = 11, ['glasses_1'] = 0,
 			['chain_1'] = 0,
@@ -127,7 +127,7 @@ Config.paleto_police_intern = {
 			['shoes_1'] = 31
 		},
 		female = {}
-	},
+	}},
 	QuestGiver = {
 		NPCHash	= 0x15F8700D,
 		x = -441.92,

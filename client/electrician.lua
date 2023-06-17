@@ -16,10 +16,14 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
+	local grade = 0
 	PlayerData = xPlayer
 	if PlayerData.job and PlayerData.job.name == 'electrician' then
 		PlayerData.job_points = get_player_work_experience('job', PlayerData.job.name)
-		putUniformOn(local_cfg.Clothes)
+
+		if PlayerData.job_points >= 4000 then grade = 1 end
+
+		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
@@ -33,9 +37,7 @@ AddEventHandler('esx:setJob', function(job)
 	PlayerData.job = job
 	PlayerData.job_points = get_player_work_experience('job', job.name)
 
-	if PlayerData.job_points >= 4000 then
-		grade = 1
-	end
+	if PlayerData.job_points >= 4000 then grade = 1 end
 
 	if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 		points_worked_on = 0

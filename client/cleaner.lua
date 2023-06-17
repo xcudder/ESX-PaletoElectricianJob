@@ -23,19 +23,21 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
+	local grade = 0
 	PlayerData = xPlayer
 	-- below is if something went wrong... go to the quest giver
 	if isInside then TriggerServerEvent("enterProperty:paletoWorks", false, local_cfg.QuestGiver) end
 
 	if PlayerData.job and PlayerData.job.name == 'cleaner' then
 		PlayerData.job_points = get_player_work_experience('job',PlayerData.job.name)
-		putUniformOn(local_cfg.Clothes)
+		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_outer_work_order(true)
 	end
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
+	local grade = 0
 	PlayerData.job = job
 	PlayerData.job_points = get_player_work_experience('job',job.name)
 
@@ -47,7 +49,7 @@ AddEventHandler('esx:setJob', function(job)
 		RemoveBlip(random_property_blip)
 		clear_out_property_variables()
 	else
-		putUniformOn(local_cfg.Clothes)
+		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_outer_work_order(true)
 	end
 end)
