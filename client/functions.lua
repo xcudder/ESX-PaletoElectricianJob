@@ -94,6 +94,7 @@ function run_intern_animation(work_position, workPoints)
 		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_AA_COFFEE", work_position.heading, true)
 		Wait(10000)
 		TriggerEvent("esx_status:remove", 'sleepiness', 20000)
+		TriggerEvent("esx_status:add", 'stress', 20000)
 		
 	elseif work_position.type == 'lunch_break' then
 		TaskStartScenarioAtPosition(playerPed, "WORLD_HUMAN_SEAT_WALL_EATING", -447.80, 6013.20, 31.72, work_position.heading, 10000, 0, 1)
