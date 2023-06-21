@@ -138,9 +138,20 @@ Config.paleto_police_intern = {
 
 Config.used_car_lot = {
 	cars = {
-		'emperor2', 'asea', 'glendale', 'ratloader',
-		'voodoo2', 'bodhi2', 'dloader', 'rebel', 'fagaloa',
-		'tornado3', 'surfer2'
+		{name = 'emperor2', 	max = 10000, 	min = 6000},
+		{name = 'asea', 		max = 20000, 	min = 16000},
+		{name = 'glendale', 	max = 18000, 	min = 16000},
+		{name = 'ratloader', 	max = 8000, 	min = 7000},
+		{name = 'voodoo2', 		max = 9000, 	min = 6000},
+		{name = 'bodhi2', 		max = 16000, 	min = 11000},
+		{name = 'dloader', 		max = 9000, 	min = 8000},
+		{name = 'rebel', 		max = 15000, 	min = 11000},
+		{name = 'fagaloa', 		max = 18000, 	min = 14000},
+		{name = 'tornado3', 	max = 15000, 	min = 9000},
+		{name = 'surfer2', 		max = 18000, 	min = 12000},
+		{name = 'faggio2', 		max = 4000, 	min = 2000},
+		{name = 'dukes3', 		max = 15000, 	min = 8000},
+		{name = 'ratbike', 		max = 5000, 	min = 2000},
 	}
 }
 

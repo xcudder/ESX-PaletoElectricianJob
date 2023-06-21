@@ -13,7 +13,7 @@ Citizen.CreateThread(function()
 		end
 
 		local hour = GetClockHours()
-		if IsPedOnFoot(player) and (hours > 22 or hour < 4) then
+		if IsPedOnFoot(player) and (hour > 22 or hour < 4) then
 			pv3 = GetEntityCoords(player)
 			near = 0
 

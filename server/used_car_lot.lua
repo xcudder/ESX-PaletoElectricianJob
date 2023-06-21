@@ -1,8 +1,8 @@
-ESX.RegisterServerCallback('used_car_lot:buyVehicle', function(source, cb, model, plate)
+ESX.RegisterServerCallback('used_car_lot:buyVehicle', function(source, cb, model, price, plate)
 	local xPlayer = ESX.GetPlayerFromId(source)
 
-	if xPlayer.getMoney() >= 12000 then
-		xPlayer.removeMoney(12000, "Vehicle Purchase")
+	if xPlayer.getMoney() >= price then
+		xPlayer.removeMoney(price, "Vehicle Purchase")
 		MySQL.insert('INSERT INTO owned_vehicles (owner, plate, vehicle) VALUES (?, ?, ?)', {
 			xPlayer.identifier, plate, json.encode({
 				model = model,

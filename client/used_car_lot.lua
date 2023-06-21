@@ -1,9 +1,9 @@
-local slots, data = {}, false
+local slots, slot_prices, data = {}, {}, false
 local possible_cars = Config.used_car_lot.cars
-local buy_prompt = "Press ~INPUT_CONTEXT~ to buy this piece of junk for 12k"
 local working, animated = false, false
 local counter = 0
 
+-- Work
 Citizen.CreateThread(function()
 	local v3 = vector3(-250.26, 6205.51, 30.49)
 	while true do
@@ -40,6 +40,7 @@ Citizen.CreateThread(function()
 	end
 end)
 
+-- Work Rewards
 Citizen.CreateThread(function()
 	while true do
 		Wait(120000)
@@ -51,6 +52,7 @@ Citizen.CreateThread(function()
 	end
 end)
 
+-- Blip
 Citizen.CreateThread(function()
 	setupBlip({
 		title="Used Car Lot",
@@ -59,58 +61,85 @@ Citizen.CreateThread(function()
 	})
 end)
 
+-- Continously create cars
 Citizen.CreateThread(function()
-	Citizen.Wait(10000)
 	while true do
-		create_car(function(v) slots[1] = v end, vector3(-246.04, 6203.51, 31.49), 1)
-		create_car(function(v) slots[2] = v end, vector3(-242.91, 6200.75, 31.49), 2)
-		create_car(function(v) slots[3] = v end, vector3(-238.26, 6196.49, 31.49), 3)
+		slots[1] = CreateCar(vector3(-246.04, 6203.51, 31.49), 1)
+		slots[2] = CreateCar(vector3(-242.91, 6200.75, 31.49), 2)
+		slots[3] = CreateCar(vector3(-238.26, 6196.49, 31.49), 3)
+
 		Citizen.Wait(20000)
 	end
 end)
 
+-- Continously check for purchase proximity
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
-		if entity_close_enough(slots[1], 3) then CarInteraction(slots[1]) end
-		if entity_close_enough(slots[2], 3) then CarInteraction(slots[2]) end
-		if entity_close_enough(slots[3], 3) then CarInteraction(slots[3]) end
+		if coordinates_close_enough(vector3(-246.04, 6203.51, 31.49), 3) then CarInteraction(slots[1], slot_prices[1], 1) end
+		if coordinates_close_enough(vector3(-242.91, 6200.75, 31.49), 3) then CarInteraction(slots[2], slot_prices[2], 2) end
+		if coordinates_close_enough(vector3(-238.26, 6196.49, 31.49), 3) then CarInteraction(slots[3], slot_prices[3], 3) end
 	end
 end)
 
-function create_car(cb, v3, slot_index)
-	Citizen.CreateThread(function()
-		if not ESX.Game.IsSpawnPointClear(v3, 2) then
-			if not slots[slot_index] then -- spawn point occupied but this client has no slot
-				slots[slot_index] = ESX.Game.GetClosestVehicle(v3)
-			end
-			return
-		end
-		local car_hash = GetHashKey(possible_cars[math.random(#possible_cars)])
-		ESX.Game.SpawnVehicle(car_hash, v3, 100.0, function(vehicle)
-			SetVehicleDirtLevel(vehicle, 15.0)
-			SetVehicleDoorsLocked(vehicle, 2)
-			SetVehicleEngineHealth(vehicle, 700.0)
-			SetVehicleMaxSpeed(vehicle, 17.0)
-			cb(vehicle)
-		end)
-	end)
+function BangUpTheCar(vehicle)
+	SetEntityHeading(vehicle, 131.40)
+	SetVehicleDirtLevel(vehicle, 15.0)
+	SetVehicleDoorsLocked(vehicle, 2)
+	SetVehicleEngineHealth(vehicle, 700.0)
+	SetVehicleMaxSpeed(vehicle, 17.0)
 end
 
-function CarInteraction(vehicle)
-	DisplayHelpText(buy_prompt)
+function CreateCar(v3, slot_index)
+	local picked_car = {}
+
+	Citizen.CreateThread(function()
+		if not ESX.Game.IsSpawnPointClear(v3, 2) then return end
+
+		picked_car 	= possible_cars[math.random(#possible_cars)]
+
+		local car_hash 		= GetHashKey(picked_car.name)
+		local vehicle
+
+		slot_prices[slot_index] = math.random(picked_car.min, picked_car.max)
+
+		while not HasModelLoaded(car_hash) do
+			RequestModel(car_hash)
+			Wait(100)
+		end
+
+		CreateVehicle(car_hash, v3, 131.40, false)
+	end)
+	while not picked_car.name do Wait(100) end
+	return picked_car.name
+end
+
+function CarInteraction(vehicle_name, price, slot_index)
+	DisplayHelpText("Press ~INPUT_CONTEXT~ to buy this piece of junk for... say...$" .. price)
 	if (IsControlJustReleased(1, 38)) then
-		local vehprops = ESX.Game.GetVehicleProperties(vehicle)
+		local persistent_vehicle = false
 		local plate =  exports['esx_vehicleshop']:GeneratePlate()
 
 		ESX.TriggerServerCallback('used_car_lot:buyVehicle', function(success)
+			local exit_coords = vector3(-235.89, 6184.82, 31.49)
+
 			if success then
-				SetVehicleNumberPlateText(vehicle, plate)
-				TaskWarpPedIntoVehicle(GetPlayerPed(-1), vehicle, -1)
-				SetVehicleDoorsLocked(vehicle, 1)
+				slots[slot_index], slot_prices[slot_index] = '', 0
+
+				ESX.Game.SpawnVehicle(GetHashKey(vehicle_name), exit_coords, 100.0, function(vehicle)
+					persistent_vehicle = vehicle
+				end, true)
+
+				while not persistent_vehicle do Wait(100) end
+
+				BangUpTheCar(persistent_vehicle)
+				SetEntityHeading(persistent_vehicle, 131.40)
+				SetVehicleNumberPlateText(persistent_vehicle, plate)
+				TaskWarpPedIntoVehicle(GetPlayerPed(-1), persistent_vehicle, -1)
+				SetVehicleDoorsLocked(persistent_vehicle, 1)
 			else
 				ESX.ShowNotification(TranslateCap('not_enough_money'))
 			end
-		end, vehprops.model, plate)
+		end, GetHashKey(vehicle_name), price, plate)
 	end
 end
