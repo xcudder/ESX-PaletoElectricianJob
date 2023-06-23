@@ -1,10 +1,8 @@
-# ESX-PaletoWorks
-Basic local paletp jobs and a paleto used car lot for ESX.
+# ESX-PaletoLives
+Liven up Paleto a bit with some basic jobs and used car lot for ESX.
 Just trying to give the top of the map some love.
 
 Requires esx_skin, skinchanger, esx_jobs, esx_status and my own esx_needtosleep
-
-Thanks to ESX-CityWorks and RC-Mining Job, which were the scripts I looked into to learn the ropes.
 
 Run in SQL:
 ```

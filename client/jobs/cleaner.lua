@@ -26,7 +26,7 @@ AddEventHandler('esx:playerLoaded', function(xPlayer)
 	local grade = 0
 	PlayerData = xPlayer
 	-- below is if something went wrong... go to the quest giver
-	if isInside then TriggerServerEvent("enterProperty:paletoWorks", false, local_cfg.QuestGiver) end
+	if isInside then TriggerServerEvent("enterProperty:paletoLives", false, local_cfg.QuestGiver) end
 
 	if PlayerData.job and PlayerData.job.name == 'cleaner' then
 		PlayerData.job_points = get_player_work_experience('job',PlayerData.job.name)
@@ -42,11 +42,13 @@ AddEventHandler('esx:setJob', function(job)
 	PlayerData.job_points = get_player_work_experience('job',job.name)
 
 	-- below is if something went wrong... go to the quest giver
-	if isInside then TriggerServerEvent("enterProperty:paletoWorks", false, local_cfg.QuestGiver) end
+	if isInside then TriggerServerEvent("enterProperty:paletoLives", false, local_cfg.QuestGiver) end
 
 	if PlayerData.job and PlayerData.job.name ~= 'cleaner' then
 		points_worked_on = 0
-		RemoveBlip(random_property_blip)
+		if DoesBlipExist(random_property_blip) then
+			RemoveBlip(random_property_blip)
+		end
 		clear_out_property_variables()
 	else
 		putUniformOn(local_cfg.Clothes[grade + 1])
@@ -123,7 +125,7 @@ function cleaner_working(work_index)
 		points_worked_on = points_worked_on + 1
 		trigger_job_progression('cleaner', points_worked_on, 5, 2)
 		if totalWorkPointsInThisHouse == houseWorkedPoints then -- we're done, get out
-			TriggerServerEvent("enterProperty:paletoWorks", false, random_property.Entrance)
+			TriggerServerEvent("enterProperty:paletoLives", false, random_property.Entrance)
 			isInside = false
 			generate_new_outer_work_order()
 		end
@@ -136,7 +138,7 @@ function generate_new_outer_work_order(clear)
 
 	if clear or next(closeby_properties) == nil then
 		closeby_properties = {}
-		ESX.TriggerServerCallback("getProperties:paletoWorks", function(properties_json) properties_payload = properties_json end)
+		ESX.TriggerServerCallback("getProperties:paletoLives", function(properties_json) properties_payload = properties_json end)
 		while not properties_payload do Wait(100) end
 		properties = json.decode(properties_payload)
 
@@ -170,6 +172,6 @@ function enter_house()
 		workSpots[i].active = 1
 		totalWorkPointsInThisHouse = totalWorkPointsInThisHouse + 1
 	end
-	TriggerServerEvent("enterProperty:paletoWorks", random_property.Interior)
-	RemoveBlip(random_property_blip)
+	TriggerServerEvent("enterProperty:paletoLives", random_property.Interior)
+	if random_property_blip then RemoveBlip(random_property_blip) end
 end

@@ -5,7 +5,7 @@ local points_worked_on = 0
 
 -- boilerplating
 local quest_giver = false
-local local_cfg = Config.paleto_factory_helper
+local local_cfg = Config.paleto_electrician
 
 -- randow work temp storage
 local random_work_position_blip = false
@@ -18,8 +18,11 @@ RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
 	local grade = 0
 	PlayerData = xPlayer
-	if PlayerData.job and PlayerData.job.name == 'factory_helper' then
-		PlayerData.job_points = get_player_work_experience('job',PlayerData.job.name)
+	if PlayerData.job and PlayerData.job.name == 'electrician' then
+		PlayerData.job_points = get_player_work_experience('job', PlayerData.job.name)
+
+		if PlayerData.job_points >= 4000 then grade = 1 end
+
 		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
@@ -32,11 +35,15 @@ RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	local grade = 0
 	PlayerData.job = job
-	PlayerData.job_points = get_player_work_experience('job',job.name)
+	PlayerData.job_points = get_player_work_experience('job', job.name)
 
-	if PlayerData.job and PlayerData.job.name ~= 'factory_helper' then
+	if PlayerData.job_points >= 4000 then grade = 1 end
+
+	if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 		points_worked_on = 0
-		RemoveBlip(random_work_position_blip)
+		if DoesBlipExist(random_work_position_blip) then
+			RemoveBlip(random_work_position_blip)
+		end
 	else
 		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
@@ -50,8 +57,8 @@ end)
 Citizen.CreateThread(function()
 	quest_giver = create_task_giver(local_cfg, "WORLD_HUMAN_SMOKING")
 	setupBlip({
-		title="Meat Factory",
-		colour=9, id=801,
+		title="Power Plant #1",
+		colour=0, id=620,
 		x=local_cfg.QuestGiver.x,
 		y=local_cfg.QuestGiver.y,
 		z=local_cfg.QuestGiver.z
@@ -68,12 +75,12 @@ Citizen.CreateThread(function()
 		end
 
 		 if entity_close_enough(quest_giver) then
-			if PlayerData.job and PlayerData.job.name ~= 'factory_helper' then
+			if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
-				if(IsControlJustReleased(1, 38))then start_work('factory_helper', 550) end
+				if(IsControlJustReleased(1, 38))then start_work('electrician', 150) end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
-				if(IsControlJustReleased(1, 38))then stop_work('factory_helper', points_worked_on, 3) end
+				if(IsControlJustReleased(1, 38))then stop_work('electrician', points_worked_on, 4) end
 			end
 		end
 	end
@@ -83,32 +90,30 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
-		if PlayerData.job and PlayerData.job.name == 'factory_helper' then
+		if PlayerData.job and PlayerData.job.name == 'electrician' then
 			drawWorkMarker(random_work_position)
 			if display_work_cta(isWorking, random_work_position) then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to ~r~working")
-				if(IsControlJustReleased(1, 38)) then factory_helper_working() end
+				if(IsControlJustReleased(1, 38)) then electrician_working() end
 			end
 		end
 	end
 end)
 
 -- Job specific block of logic
-function factory_helper_working()
+function electrician_working()
 	isWorking = true
+	local multiplier = 1
+	if PlayerData.job_points >= 4000 then multiplier = 2 end
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
-		run_work_animations('factory_helper', random_work_position, PlayerData.job_points)
+		run_work_animations('electrician', random_work_position, PlayerData.job_points)
 		isWorking = false
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
 		end)
 		points_worked_on = points_worked_on + 1
-		trigger_job_progression('factory_helper', points_worked_on, 4)
+		trigger_job_progression('electrician', points_worked_on, 4, multiplier)
 	end)
 end
-
-RegisterCommand("get_factory_work_position", function(source)
-	ESX.ShowNotification(json.encode(random_work_position))
-end)

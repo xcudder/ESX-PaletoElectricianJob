@@ -25,13 +25,13 @@ function start_work(job_name, needed_points)
 	if (difference > 0) then return ESX.ShowNotification("You need more " .. difference .. " work point(s) to work here") end
 	ESX.ShowNotification("You started your shift")
 	local job_specific_points = get_player_work_experience('job', job_name)
-	TriggerServerEvent('toggleJob:paletoWorks', job_name, job_specific_points)
+	TriggerServerEvent('toggleJob:paletoLives', job_name, job_specific_points)
 end
 
 function get_player_work_experience(query, param)
 	local player_work_experience, retval = false, 0
 
-	ESX.TriggerServerCallback("getWorkExperience:paletoWorks", function(work_experience) player_work_experience = work_experience end)
+	ESX.TriggerServerCallback("getWorkExperience:paletoLives", function(work_experience) player_work_experience = work_experience end)
 	while not player_work_experience do Wait(100) end
 
 	if query == 'job' and param then
@@ -208,11 +208,11 @@ end
 function reward(job, progression_step, multiplier) -- to be ran on step progression
 	local reward = 1
 	if multiplier then reward = reward * multiplier end
-	TriggerServerEvent("giveReward:paletoWorks", reward, job, progression_step)
+	TriggerServerEvent("giveReward:paletoLives", reward, job, progression_step)
 end
 
 function stop_work(job)
-	TriggerServerEvent('toggleJob:paletoWorks', 'unemployed')
+	TriggerServerEvent('toggleJob:paletoLives', 'unemployed')
 	getOutOfUniform()
 end
 

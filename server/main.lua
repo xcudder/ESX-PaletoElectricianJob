@@ -1,7 +1,7 @@
 ESX = exports["es_extended"]:getSharedObject()
 
-RegisterNetEvent("giveReward:paletoWorks")
-AddEventHandler("giveReward:paletoWorks", function(reward, job_name, work_points)
+RegisterNetEvent("giveReward:paletoLives")
+AddEventHandler("giveReward:paletoLives", function(reward, job_name, work_points)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	xPlayer.addAccountMoney('money', reward)
 
@@ -35,9 +35,8 @@ AddEventHandler("giveReward:paletoWorks", function(reward, job_name, work_points
 	end)
 end)
 
-
-RegisterNetEvent('toggleJob:paletoWorks')
-AddEventHandler('toggleJob:paletoWorks', function(job_name, job_specific_points)
+RegisterNetEvent('toggleJob:paletoLives')
+AddEventHandler('toggleJob:paletoLives', function(job_name, job_specific_points)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local grade = 0
 
@@ -46,19 +45,19 @@ AddEventHandler('toggleJob:paletoWorks', function(job_name, job_specific_points)
 	if xPlayer and ESX.DoesJobExist(job_name, grade) then xPlayer.setJob(job_name, grade) end
 end)
 
-ESX.RegisterServerCallback('getProperties:paletoWorks', function(source, cb)
+ESX.RegisterServerCallback('getProperties:paletoLives', function(source, cb)
 	local PropertiesList = LoadResourceFile('esx_property', 'properties.json')
 	if PropertiesList then cb(PropertiesList) end
 end)
 
-ESX.RegisterServerCallback('getWorkExperience:paletoWorks', function(source, cb)
+ESX.RegisterServerCallback('getWorkExperience:paletoLives', function(source, cb)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local users = MySQL.query.await('SELECT * FROM users WHERE identifier = ?', {xPlayer.identifier})
 	cb(json.decode(users[1].work_experience))
 end)
 
-RegisterNetEvent('enterProperty:paletoWorks')
-AddEventHandler('enterProperty:paletoWorks', function(interiorType, outside)
+RegisterNetEvent('enterProperty:paletoLives')
+AddEventHandler('enterProperty:paletoLives', function(interiorType, outside)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local x, y, z
 
@@ -73,4 +72,14 @@ AddEventHandler('enterProperty:paletoWorks', function(interiorType, outside)
 	end
 
 	xPlayer.setCoords(vector3(x, y, z))
+end)
+
+ESX.RegisterServerCallback("payForLunch:paletoLives", function(source, cb)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	if xPlayer.getMoney() >= 8 then
+		xPlayer.removeMoney(8, "Lunch")
+		cb(true)
+	else
+		cb(false)
+	end
 end)

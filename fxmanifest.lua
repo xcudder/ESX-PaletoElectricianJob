@@ -14,12 +14,7 @@ server_scripts {
 
 client_scripts {
 	'config.lua',
-	'client/functions.lua',
-	'client/electrician.lua',
-	'client/factory_helper.lua',
-	'client/cleaner.lua',
-	'client/police_intern.lua',
-	'client/commands.lua',
-	'client/used_car_lot.lua',
-	'client/hostiles.lua'
+	'client/helpers/*.lua',
+	'client/jobs/*.lua',
+	'client/misc/*.lua',
 }

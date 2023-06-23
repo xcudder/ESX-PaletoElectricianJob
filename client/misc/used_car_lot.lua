@@ -47,7 +47,7 @@ Citizen.CreateThread(function()
 
 		if(working) then
 			ESX.ShowNotification("You got 1 dolar")
-			TriggerServerEvent("giveReward:paletoWorks", 1, "misc", 2)
+			TriggerServerEvent("giveReward:paletoLives", 1, "misc", 2)
 		end
 	end
 end)
