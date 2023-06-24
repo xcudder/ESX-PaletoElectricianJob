@@ -31,6 +31,10 @@ Config.paleto_electrician = {
 				['helmet_1'] = 76
 			},
 			female = {}
+		},
+		{ -- grade 2
+			male = {},
+			female = {}
 		}
 	},
 	QuestGiver = {
