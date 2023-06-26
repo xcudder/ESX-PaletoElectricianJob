@@ -133,6 +133,8 @@ function run_electrician_animation(work_position, workPoints) --work position st
 	setPlayerAtWorkPosition(work_position)
 
 	local each_animation_time = 10000 - workPoints
+	if each_animation_time < 1000 then each_animation_time = 1000 end
+
 	local playerPed = PlayerPedId()
 
 	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)

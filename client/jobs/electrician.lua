@@ -22,7 +22,7 @@ AddEventHandler('esx:playerLoaded', function(xPlayer)
 		PlayerData.job_points = get_player_work_experience('job', PlayerData.job.name)
 
 		if PlayerData.job_points >= 4000 then grade = 1 end
-		if PlayerData.job_points >= 8000 then grade = 2 end
+		if PlayerData.job_points >= 10000 then grade = 2 end
 
 		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
@@ -39,6 +39,7 @@ AddEventHandler('esx:setJob', function(job)
 	PlayerData.job_points = get_player_work_experience('job', job.name)
 
 	if PlayerData.job_points >= 4000 then grade = 1 end
+	if PlayerData.job_points >= 10000 then grade = 2 end
 
 	if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 		points_worked_on = 0
@@ -106,7 +107,7 @@ function electrician_working()
 	isWorking = true
 	local multiplier = 1
 	if PlayerData.job_points >= 4000 then multiplier = 4 end
-	if PlayerData.job_points >= 8000 then multiplier = 8 end
+	if PlayerData.job_points >= 10000 then multiplier = 8 end
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
 		run_work_animations('electrician', random_work_position, PlayerData.job_points)

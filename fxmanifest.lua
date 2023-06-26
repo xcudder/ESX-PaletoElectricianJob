@@ -8,7 +8,6 @@ server_scripts {
 	'@oxmysql/lib/MySQL.lua',
 	'config.lua',
 	'server/main.lua',
-	'server/commands.lua',
 	'server/used_car_lot.lua'
 }
 
