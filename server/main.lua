@@ -36,13 +36,21 @@ AddEventHandler("giveReward:paletoLives", function(reward, job_name, work_points
 end)
 
 RegisterNetEvent('toggleJob:paletoLives')
-AddEventHandler('toggleJob:paletoLives', function(job_name, job_specific_points)
+AddEventHandler('toggleJob:paletoLives', function(job_name, promotion_points)
 	local xPlayer = ESX.GetPlayerFromId(source)
-	local grade = 0
 
-	if job_name == 'electrician' and job_specific_points >= 4000 then grade = 1 end
+	if not grade then grade = 0 end
 
-	if xPlayer and ESX.DoesJobExist(job_name, grade) then xPlayer.setJob(job_name, grade) end
+	if (job_name == 'electrician') then
+		if promotion_points >= 4000 then grade = 1 end
+		if promotion_points >= 10000 then grade = 2 end
+	end
+
+	if xPlayer and ESX.DoesJobExist(job_name, grade) then
+		xPlayer.setJob(job_name, grade)
+	else
+		print("Error: Job " .. job_name .. " at grade " .. grade .. " does not exist")
+	end
 end)
 
 ESX.RegisterServerCallback('getProperties:paletoLives', function(source, cb)
@@ -54,6 +62,12 @@ ESX.RegisterServerCallback('getWorkExperience:paletoLives', function(source, cb)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local users = MySQL.query.await('SELECT * FROM users WHERE identifier = ?', {xPlayer.identifier})
 	cb(json.decode(users[1].work_experience))
+end)
+
+ESX.RegisterServerCallback('getSkillExperience:paletoLives', function(source, cb)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	local users = MySQL.query.await('SELECT * FROM users WHERE identifier = ?', {xPlayer.identifier})
+	cb(json.decode(users[1].skill_experience))
 end)
 
 RegisterNetEvent('enterProperty:paletoLives')

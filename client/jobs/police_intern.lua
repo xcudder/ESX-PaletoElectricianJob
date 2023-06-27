@@ -16,11 +16,12 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-	local grade = 0
 	PlayerData = xPlayer
 	if PlayerData.job and PlayerData.job.name == 'police_intern' then
-		PlayerData.job_points = get_player_work_experience('job',PlayerData.job.name)
-		putUniformOn(local_cfg.Clothes[grade + 1])
+		PlayerData.police_intern_points = get_player_work_experience('job',PlayerData.job.name)
+		PlayerData.police_intern_points = PlayerData.police_intern_points + get_player_skill_experience('law')
+
+		putUniformOn(local_cfg.Clothes[PlayerData.job.grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
@@ -30,9 +31,7 @@ end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-	local grade = 0
 	PlayerData.job = job
-	PlayerData.job_points = get_player_work_experience('job',job.name)
 
 	if PlayerData.job and PlayerData.job.name ~= 'police_intern' then
 		points_worked_on = 0
@@ -40,7 +39,10 @@ AddEventHandler('esx:setJob', function(job)
 			RemoveBlip(random_work_position_blip)
 		end
 	else
-		putUniformOn(local_cfg.Clothes[grade + 1])
+		PlayerData.police_intern_points = get_player_work_experience('job',job.name)
+		PlayerData.police_intern_points = PlayerData.police_intern_points + get_player_skill_experience('law')
+
+		putUniformOn(local_cfg.Clothes[job.grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
@@ -100,7 +102,7 @@ function police_intern_working()
 	isWorking = true
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
-		run_work_animations('police_intern', random_work_position, PlayerData.job_points)
+		run_intern_animation('police_intern', random_work_position, PlayerData.police_intern_points)
 		isWorking = false
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
@@ -109,4 +111,35 @@ function police_intern_working()
 		points_worked_on = points_worked_on + 1
 		trigger_job_progression('police_intern', points_worked_on, 10)
 	end)
+end
+
+function run_intern_animation(work_position, workPoints)
+	setPlayerAtWorkPosition(work_position)
+
+	local playerPed = PlayerPedId()
+	local clipboard_work_animation_time = 15000 - workPoints
+	local digitalizing_work_animation_time = 5000 - workPoints
+
+	if work_position.type == 'coffee' then
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_AA_COFFEE", work_position.heading, true)
+		Wait(10000)
+		TriggerEvent("esx_status:remove", 'sleepiness', 20000)
+		TriggerEvent("esx_status:add", 'stress', 20000)
+		
+	elseif work_position.type == 'lunch_break' then
+		TaskStartScenarioAtPosition(playerPed, "WORLD_HUMAN_SEAT_WALL_EATING", -447.80, 6013.20, 31.72, work_position.heading, 10000, 0, 1)
+		Wait(10000)
+		TriggerEvent("esx_status:add", 'hunger', 100000)
+	else
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_TOURIST_MOBILE", 0, true)
+		Wait(digitalizing_work_animation_time)
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
+		Wait(clipboard_work_animation_time)
+	end
+
+	ClearPedTasksImmediately(playerPed)
+
+	delete_object(`p_amb_coffeecup_01`)
+	delete_object(`p_cs_clipboard`)
+	delete_object(`prop_amb_donut`)
 end

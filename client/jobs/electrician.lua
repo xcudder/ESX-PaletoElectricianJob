@@ -16,15 +16,12 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-	local grade = 0
 	PlayerData = xPlayer
 	if PlayerData.job and PlayerData.job.name == 'electrician' then
-		PlayerData.job_points = get_player_work_experience('job', PlayerData.job.name)
+		PlayerData.electrician_points = get_player_work_experience('job', PlayerData.job.name)
+		PlayerData.electrician_points = PlayerData.electrician_points + get_player_skill_experience('electrical_engineering')
 
-		if PlayerData.job_points >= 4000 then grade = 1 end
-		if PlayerData.job_points >= 10000 then grade = 2 end
-
-		putUniformOn(local_cfg.Clothes[grade + 1])
+		putUniformOn(local_cfg.Clothes[PlayerData.job.grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
@@ -34,12 +31,7 @@ end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-	local grade = 0
 	PlayerData.job = job
-	PlayerData.job_points = get_player_work_experience('job', job.name)
-
-	if PlayerData.job_points >= 4000 then grade = 1 end
-	if PlayerData.job_points >= 10000 then grade = 2 end
 
 	if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 		points_worked_on = 0
@@ -47,7 +39,10 @@ AddEventHandler('esx:setJob', function(job)
 			RemoveBlip(random_work_position_blip)
 		end
 	else
-		putUniformOn(local_cfg.Clothes[grade + 1])
+		PlayerData.electrician_points = get_player_work_experience('job', PlayerData.job.name)
+		PlayerData.electrician_points = PlayerData.electrician_points + get_player_skill_experience('electrical_engineering')
+
+		putUniformOn(local_cfg.Clothes[job.grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
@@ -106,11 +101,11 @@ end)
 function electrician_working()
 	isWorking = true
 	local multiplier = 1
-	if PlayerData.job_points >= 4000 then multiplier = 4 end
-	if PlayerData.job_points >= 10000 then multiplier = 8 end
+	if PlayerData.electrician_points >= 4000 then multiplier = 4 end
+	if PlayerData.electrician_points >= 10000 then multiplier = 8 end
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
-		run_work_animations('electrician', random_work_position, PlayerData.job_points)
+		run_electrician_animation('electrician', random_work_position, PlayerData.electrician_points)
 		isWorking = false
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
@@ -119,4 +114,23 @@ function electrician_working()
 		points_worked_on = points_worked_on + 1
 		trigger_job_progression('electrician', points_worked_on, 4, multiplier)
 	end)
+end
+
+function run_electrician_animation(work_position, workPoints) --work position still unused
+	setPlayerAtWorkPosition(work_position)
+
+	local each_animation_time = 10000 - workPoints
+	if each_animation_time < 1000 then each_animation_time = 1000 end
+
+	local playerPed = PlayerPedId()
+
+	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
+	Wait(each_animation_time)
+	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WINDOW_SHOP_BROWSE", 0, true)
+	delete_object(`p_cs_clipboard`)
+	Wait(each_animation_time)
+	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
+	Wait(each_animation_time)
+	ClearPedTasksImmediately(playerPed)
+	delete_object(`prop_weld_torch`)
 end

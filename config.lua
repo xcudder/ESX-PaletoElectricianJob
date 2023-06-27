@@ -16,7 +16,7 @@ Config.paleto_electrician = {
 				['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 				['torso_1'] = 65,   ['torso_2'] = 3,
 				['pants_1'] = 38, ['pants_2'] = 3,
-				['shoes_1'] = 51
+				['shoes_1'] = 51, ['shoes_2'] = 3,
 			},
 			female = {}
 		},
@@ -33,7 +33,15 @@ Config.paleto_electrician = {
 			female = {}
 		},
 		{ -- grade 2
-			male = {},
+			male = {
+				['arms'] = 96, ['glasses_1'] = 1,
+				['chain_1'] = 0,
+				['tshirt_1'] = 74,  ['tshirt_2'] = 3,
+				['torso_1'] = 66,   ['torso_2'] = 1,
+				['pants_1'] = 39, ['pants_2'] = 1,
+				['shoes_1'] = 54, ['shoes_2'] = 0,
+				['glasses_1'] = 4, ['glasses_2'] = 9
+			},
 			female = {}
 		}
 	},

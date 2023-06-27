@@ -16,11 +16,12 @@ ESX = exports["es_extended"]:getSharedObject()
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-	local grade = 0
 	PlayerData = xPlayer
 	if PlayerData.job and PlayerData.job.name == 'factory_helper' then
-		PlayerData.job_points = get_player_work_experience('job',PlayerData.job.name)
-		putUniformOn(local_cfg.Clothes[grade + 1])
+		PlayerData.factory_points = get_player_work_experience('job',PlayerData.job.name)
+		PlayerData.factory_points = PlayerData.factory_points + get_player_skill_experience('information_technology')
+
+		putUniformOn(local_cfg.Clothes[PlayerData.job.grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
@@ -30,9 +31,7 @@ end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-	local grade = 0
 	PlayerData.job = job
-	PlayerData.job_points = get_player_work_experience('job',job.name)
 
 	if PlayerData.job and PlayerData.job.name ~= 'factory_helper' then
 		points_worked_on = 0
@@ -40,7 +39,10 @@ AddEventHandler('esx:setJob', function(job)
 			RemoveBlip(random_work_position_blip)
 		end
 	else
-		putUniformOn(local_cfg.Clothes[grade + 1])
+		PlayerData.factory_points = get_player_work_experience('job',job.name)
+		PlayerData.factory_points = PlayerData.factory_points + get_player_skill_experience('information_technology')
+
+		putUniformOn(local_cfg.Clothes[job.grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
 			random_work_position_blip = new_blip
@@ -100,7 +102,7 @@ function factory_helper_working()
 	isWorking = true
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
-		run_work_animations('factory_helper', random_work_position, PlayerData.job_points)
+		run_factory_helper_animation('factory_helper', random_work_position, PlayerData.factory_points)
 		isWorking = false
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
@@ -111,6 +113,26 @@ function factory_helper_working()
 	end)
 end
 
-RegisterCommand("get_factory_work_position", function(source)
-	ESX.ShowNotification(json.encode(random_work_position))
-end)
+function run_factory_helper_animation(work_position, workPoints)
+	setPlayerAtWorkPosition(work_position)
+
+	local computer_work_animation_time = 10000 - workPoints
+	local clipboard_work_animation_time = 15000 - workPoints
+	local playerPed = PlayerPedId()
+
+	if work_position.type == 'computer' then
+		RequestAnimDict("abigail_mcs_1_concat-9")
+		Citizen.Wait(100)
+		Citizen.CreateThread(function()
+			TaskPlayAnim(playerPed, 'abigail_mcs_1_concat-9', 'csb_abigail_dual-9', 12.0, 12.0, computer_work_animation_time, 81, 0.0, 1, 1, 1)
+			SetEntityHeading(playerPed, 375.0)
+		end)
+		Wait(computer_work_animation_time)
+		RemoveAnimDict("abigail_mcs_1_concat-9")
+	else
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
+		Wait(clipboard_work_animation_time)
+		ClearPedTasksImmediately(playerPed)
+		delete_object(`p_cs_clipboard`)
+	end
+end

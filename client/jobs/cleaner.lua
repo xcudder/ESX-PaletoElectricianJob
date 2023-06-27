@@ -29,7 +29,6 @@ AddEventHandler('esx:playerLoaded', function(xPlayer)
 	if isInside then TriggerServerEvent("enterProperty:paletoLives", false, local_cfg.QuestGiver) end
 
 	if PlayerData.job and PlayerData.job.name == 'cleaner' then
-		PlayerData.job_points = get_player_work_experience('job',PlayerData.job.name)
 		putUniformOn(local_cfg.Clothes[grade + 1])
 		generate_new_outer_work_order(true)
 	end
@@ -39,7 +38,6 @@ RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	local grade = 0
 	PlayerData.job = job
-	PlayerData.job_points = get_player_work_experience('job',job.name)
 
 	-- below is if something went wrong... go to the quest giver
 	if isInside then TriggerServerEvent("enterProperty:paletoLives", false, local_cfg.QuestGiver) end
@@ -119,7 +117,7 @@ function cleaner_working(work_index)
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
 		isWorking = true
-		run_work_animations('cleaner', workSpots[work_index], PlayerData.job_points)
+		run_cleaner_animation('cleaner', workSpots[work_index])
 		isWorking , workSpots[work_index].active = false, 0
 		houseWorkedPoints = houseWorkedPoints + 1
 		points_worked_on = points_worked_on + 1
@@ -130,6 +128,21 @@ function cleaner_working(work_index)
 			generate_new_outer_work_order()
 		end
 	end)
+end
+
+function run_cleaner_animation(work_position)
+	local playerPed = PlayerPedId()
+
+	RequestAnimDict("amb@world_human_janitor@male@idle_a")
+	Wait(100)
+	local broom = CreateObject(GetHashKey("prop_tool_broom2"), 0, 0, 0, true, true, true)
+	AttachEntityToEntity(broom, playerPed, GetPedBoneIndex(playerPed, 0x188E), 0.6, 0.7, 0.5, -150.0, 100.0, 220.0, true, true, false, true, 1, true)
+	TaskPlayAnim(GetPlayerPed(-1), 'amb@world_human_janitor@male@idle_a', 'idle_a', 12.0, 4.0, 7200, 5, 0.2, false, false, false)
+	Wait(7200)
+	DetachEntity(broom, 1, true)
+	DeleteEntity(broom)
+	DeleteObject(broom)
+	RemoveAnimDict("amb@world_human_janitor@male@idle_a")
 end
 
 function generate_new_outer_work_order(clear)

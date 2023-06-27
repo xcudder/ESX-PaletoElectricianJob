@@ -19,6 +19,7 @@ INSERT INTO `job_grades` (`job_name`, `name`, `label`, `grade`) VALUES ('cleaner
 INSERT INTO `job_grades` (`job_name`, `name`, `label`, `grade`) VALUES ('police_intern', 'intern', 'Intern', '0')
 
 ALTER TABLE `users` ADD `work_experience` JSON NOT NULL DEFAULT '[]' AFTER `pincode`;
+ALTER TABLE `users` ADD `skill_experience` JSON NOT NULL DEFAULT '[]' AFTER `work_experience`;
 ```
 
 Add this project to the resources folder and server.cfg and you're done.
