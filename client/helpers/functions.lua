@@ -61,7 +61,7 @@ function get_player_work_experience(query, param)
 end
 
 function get_player_skill_experience(skill)
-	local player_skill_experience, retval = false, 0
+	local player_skill_experience, retval = {}, 0
 
 	ESX.TriggerServerCallback("getSkillExperience:paletoLives", function(skill_experience)
 		player_skill_experience = skill_experience

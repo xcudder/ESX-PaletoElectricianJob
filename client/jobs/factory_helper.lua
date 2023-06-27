@@ -102,7 +102,7 @@ function factory_helper_working()
 	isWorking = true
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
-		run_factory_helper_animation('factory_helper', random_work_position, PlayerData.factory_points)
+		run_factory_helper_animation(random_work_position, PlayerData.factory_points)
 		isWorking = false
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work

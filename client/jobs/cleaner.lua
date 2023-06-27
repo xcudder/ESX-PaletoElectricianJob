@@ -117,7 +117,7 @@ function cleaner_working(work_index)
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
 		isWorking = true
-		run_cleaner_animation('cleaner', workSpots[work_index])
+		run_cleaner_animation(workSpots[work_index])
 		isWorking , workSpots[work_index].active = false, 0
 		houseWorkedPoints = houseWorkedPoints + 1
 		points_worked_on = points_worked_on + 1

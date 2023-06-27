@@ -105,7 +105,7 @@ function electrician_working()
 	if PlayerData.electrician_points >= 10000 then multiplier = 8 end
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
-		run_electrician_animation('electrician', random_work_position, PlayerData.electrician_points)
+		run_electrician_animation(random_work_position, PlayerData.electrician_points)
 		isWorking = false
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work

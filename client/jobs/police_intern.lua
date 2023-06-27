@@ -102,7 +102,7 @@ function police_intern_working()
 	isWorking = true
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
-		run_intern_animation('police_intern', random_work_position, PlayerData.police_intern_points)
+		run_intern_animation(random_work_position, PlayerData.police_intern_points)
 		isWorking = false
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
 			random_work_position = new_work
