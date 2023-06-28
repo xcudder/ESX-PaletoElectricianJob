@@ -39,7 +39,7 @@ RegisterNetEvent('toggleJob:paletoLives')
 AddEventHandler('toggleJob:paletoLives', function(job_name, promotion_points)
 	local xPlayer = ESX.GetPlayerFromId(source)
 
-	if not grade then grade = 0 end
+	local  grade = 0
 
 	if (job_name == 'electrician') then
 		if promotion_points >= 4000 then grade = 1 end

@@ -136,7 +136,7 @@ Config.paleto_police_intern = {
 			['tshirt_1'] = 15,  ['tshirt_2'] = 0,
 			['torso_1'] = 13,   ['torso_2'] = 0,
 			['pants_1'] = 76, ['pants_2'] = 0,
-			['shoes_1'] = 31
+			['shoes_1'] = 31, ['shoes_2'] = 0
 		},
 		female = {}
 	}},
