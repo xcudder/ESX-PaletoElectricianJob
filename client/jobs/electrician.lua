@@ -102,7 +102,7 @@ function electrician_working()
 	isWorking = true
 	local multiplier = 1
 	if PlayerData.electrician_points >= 4000 then multiplier = 4 end
-	if PlayerData.electrician_points >= 10000 then multiplier = 8 end
+	if PlayerData.electrician_points >= 12000 then multiplier = 8 end
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
 		run_electrician_animation(random_work_position, PlayerData.electrician_points)
