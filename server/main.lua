@@ -42,8 +42,8 @@ AddEventHandler('toggleJob:paletoLives', function(job_name, promotion_points)
 	local  grade = 0
 
 	if (job_name == 'electrician') then
-		if promotion_points >= 4000 then grade = 1 end
-		if promotion_points >= 10000 then grade = 2 end
+		if promotion_points >= Config.paleto_electrician.PromotionThreshold.grade1 then grade = 1 end
+		if promotion_points >= Config.paleto_electrician.PromotionThreshold.grade2 then grade = 2 end
 	end
 
 	if xPlayer and ESX.DoesJobExist(job_name, grade) then
