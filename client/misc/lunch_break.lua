@@ -29,8 +29,7 @@ end)
 Citizen.CreateThread(function()
 	LunchSpotBlip = setupBlip({
 		title="Worker Lunch Spot",
-		colour=46, id=77,
-		x=v3.x, y=v3.y, z=v3.z
+		colour=46, id=77, v3=v3
 	})
 
 	while true do

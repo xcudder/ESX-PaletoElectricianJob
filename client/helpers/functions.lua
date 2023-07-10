@@ -1,6 +1,6 @@
 
 function setupBlip(info)
-	info.blip = AddBlipForCoord(info.x, info.y, info.z)
+	info.blip = AddBlipForCoord(info.v3.x, info.v3.y, info.v3.z)
 	SetBlipSprite(info.blip, info.id)
 	SetBlipDisplay(info.blip, 4)
 	SetBlipScale(info.blip, 0.9)
@@ -113,13 +113,13 @@ function entity_close_enough(second_entity, overwrite_radius)
 	if not overwrite_radius then overwrite_radius = 1.5 end
 	local A = GetEntityCoords(GetPlayerPed(-1), false)
 	local B = GetEntityCoords(second_entity, false)
-	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < 1.5
+	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < overwrite_radius
 end
 
 function coordinates_close_enough(B, overwrite_radius)
 	if not overwrite_radius then overwrite_radius = 1.5 end
 	local A = GetEntityCoords(GetPlayerPed(-1), false)
-	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < 1.5
+	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < overwrite_radius
 end
 
 function generate_new_work_order(job_config, current_work_blip, cb)

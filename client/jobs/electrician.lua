@@ -56,9 +56,7 @@ Citizen.CreateThread(function()
 	setupBlip({
 		title="Power Plant #1",
 		colour=0, id=620,
-		x=local_cfg.QuestGiver.x,
-		y=local_cfg.QuestGiver.y,
-		z=local_cfg.QuestGiver.z
+		v3=local_cfg.QuestGiver
 	})
 end)
 
@@ -116,21 +114,27 @@ function electrician_working()
 	end)
 end
 
-function run_electrician_animation(work_position, workPoints) --work position still unused
+function run_electrician_animation(work_position, workPoints)
 	setPlayerAtWorkPosition(work_position)
 
 	local each_animation_time = 10000 - workPoints
-	if each_animation_time < 1000 then each_animation_time = 1000 end
 
 	local playerPed = PlayerPedId()
 
-	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
-	Wait(each_animation_time)
-	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WINDOW_SHOP_BROWSE", 0, true)
-	delete_object(`p_cs_clipboard`)
-	Wait(each_animation_time)
-	TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
-	Wait(each_animation_time)
-	ClearPedTasksImmediately(playerPed)
-	delete_object(`prop_weld_torch`)
+	if each_animation_time < 1000 then
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
+		Wait(3000)
+		ClearPedTasksImmediately(playerPed)
+		delete_object(`prop_weld_torch`)
+	else
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_CLIPBOARD", 0, true)
+		Wait(each_animation_time)
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WINDOW_SHOP_BROWSE", 0, true)
+		delete_object(`p_cs_clipboard`)
+		Wait(each_animation_time)
+		TaskStartScenarioInPlace(playerPed, "WORLD_HUMAN_WELDING", 0, true)
+		Wait(each_animation_time)
+		ClearPedTasksImmediately(playerPed)
+		delete_object(`prop_weld_torch`)
+	end
 end

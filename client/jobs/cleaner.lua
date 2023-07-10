@@ -60,9 +60,7 @@ Citizen.CreateThread(function()
 	setupBlip({
 		title="Cleaning Service",
 		colour=0, id=837,
-		x=local_cfg.QuestGiver.x,
-		y=local_cfg.QuestGiver.y,
-		z=local_cfg.QuestGiver.z
+		v3=local_cfg.QuestGiver,
 	})
 end)
 

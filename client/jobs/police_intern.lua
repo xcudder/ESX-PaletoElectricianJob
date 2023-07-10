@@ -56,9 +56,7 @@ Citizen.CreateThread(function()
 	setupBlip({
 		title="Paleto Police",
 		colour=46, id=526,
-		x=local_cfg.QuestGiver.x,
-		y=local_cfg.QuestGiver.y,
-		z=local_cfg.QuestGiver.z
+		v3=local_cfg.QuestGiver
 	})
 end)
 
