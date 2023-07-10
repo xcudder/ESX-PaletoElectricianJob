@@ -12,7 +12,7 @@ function setupBlip(info)
 end
 
 function display_work_cta(isWorking, random_work_position)
-	local player_position = GetEntityCoords(GetPlayerPed(-1), false)
+	local player_position = GetEntityCoords(PlayerPedId(), false)
 	local work_player_distance = Vdist(random_work_position.x, random_work_position.y, random_work_position.z, player_position.x, player_position.y, player_position.z)
 	return work_player_distance < 1.5 and isWorking == false
 end
@@ -111,14 +111,14 @@ end
 
 function entity_close_enough(second_entity, overwrite_radius)
 	if not overwrite_radius then overwrite_radius = 1.5 end
-	local A = GetEntityCoords(GetPlayerPed(-1), false)
+	local A = GetEntityCoords(PlayerPedId(), false)
 	local B = GetEntityCoords(second_entity, false)
 	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < overwrite_radius
 end
 
 function coordinates_close_enough(B, overwrite_radius)
 	if not overwrite_radius then overwrite_radius = 1.5 end
-	local A = GetEntityCoords(GetPlayerPed(-1), false)
+	local A = GetEntityCoords(PlayerPedId(), false)
 	return Vdist(B.x, B.y, B.z, A.x, A.y, A.z) < overwrite_radius
 end
 
@@ -173,4 +173,11 @@ end
 function setPlayerAtWorkPosition(v3)
 	SetEntityCoords(PlayerPedId(), v3.x, v3.y, v3.z)
 	SetEntityHeading(PlayerPedId(), v3.heading)
+end
+
+function missionText(text, time)
+    ClearPrints()
+    SetTextEntry_2("STRING")
+    AddTextComponentString(text)
+    DrawSubtitleTimed(time, 1)
 end
