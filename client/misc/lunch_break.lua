@@ -4,7 +4,7 @@ local PlayerIsValidPaletoWorker = false
 local job_specific_points = 0
 local v3 = vector3(-123.28, 6390.1, 32.18)
 local PlayerData = {}
-local lastAte = false
+local lastAte = -1
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
@@ -49,7 +49,7 @@ Citizen.CreateThread(function()
 				DisplayHelpText("Our restaurant is closed (11:00 to 14:00)")
 			elseif not PlayerIsValidPaletoWorker then
 				DisplayHelpText("Our restaurant is open to local workers only")
-			elseif lastAte == (GetClockDayOfMonth() .. ":" .. GetClockDayOfWeek())  then
+			elseif lastAte == GetClockDayOfWeek()  then
 				DisplayHelpText("One meal per day, sir")
 			elseif job_specific_points < 1500 then
 				DisplayHelpText("You need another " .. (1500 - job_specific_points) .. " work points in your job to eat here")
@@ -58,7 +58,7 @@ Citizen.CreateThread(function()
 				if(IsControlJustReleased(1, 38)) then
 					ESX.TriggerServerCallback("payForLunch:paletoLives", function(lunchPayedFor)
 						if (lunchPayedFor) then
-							lastAte = (GetClockDayOfMonth() .. ":" .. GetClockDayOfWeek())
+							lastAte = GetClockDayOfWeek()
 							DoScreenFadeOut(1000)
 							Wait(3000)
 							TriggerEvent("esx_status:add", 'hunger', 200000)

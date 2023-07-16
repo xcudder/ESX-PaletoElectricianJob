@@ -11,6 +11,7 @@ AddEventHandler("giveReward:paletoLives", function(reward, job_name, work_points
 
 		local jobs, correct_job
 		local previous_job = false
+		local started_working_now = false
 
 		if user.work_experience ~= nil and #json.decode(user.work_experience) > 0 then
 			jobs = json.decode(user.work_experience)
@@ -20,11 +21,12 @@ AddEventHandler("giveReward:paletoLives", function(reward, job_name, work_points
 					jobs[i].work_points = jobs[i].work_points + work_points
 				end
 			end
-		else
+		elseif #json.decode(user.skill_experience) == 0 then
+			started_working_now = true
 			jobs = {{job_name = job_name, work_points = work_points}}
 		end
 
-		if not previous_job then
+		if not previous_job and not started_working_now then
 			jobs[#jobs + 1] = {job_name = job_name, work_points = work_points}
 		end
 
