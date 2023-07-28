@@ -46,6 +46,7 @@ AddEventHandler('toggleJob:paletoLives', function(job_name, promotion_points)
 	if (job_name == 'electrician') then
 		if promotion_points >= Config.paleto_electrician.PromotionThreshold.grade1 then grade = 1 end
 		if promotion_points >= Config.paleto_electrician.PromotionThreshold.grade2 then grade = 2 end
+		if promotion_points >= Config.paleto_electrician.PromotionThreshold.grade3 then grade = 3 end
 	end
 
 	if xPlayer and ESX.DoesJobExist(job_name, grade) then
@@ -69,7 +70,7 @@ end)
 ESX.RegisterServerCallback('getSkillExperience:paletoLives', function(source, cb)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local users = MySQL.query.await('SELECT * FROM users WHERE identifier = ?', {xPlayer.identifier})
-	cb(json.decode(users[1].skill_experience))
+	cb(users[1].skill_experience)
 end)
 
 RegisterNetEvent('enterProperty:paletoLives')

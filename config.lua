@@ -43,6 +43,18 @@ Config.paleto_electrician = {
 				['glasses_1'] = 4, ['glasses_2'] = 9
 			},
 			female = {}
+		},
+		{ -- grade 3
+			male = {
+				['arms'] = 96, ['glasses_1'] = 1,
+				['chain_1'] = 0,
+				['tshirt_1'] = 74,  ['tshirt_2'] = 3,
+				['torso_1'] = 66,   ['torso_2'] = 1,
+				['pants_1'] = 39, ['pants_2'] = 1,
+				['shoes_1'] = 54, ['shoes_2'] = 0,
+				['glasses_1'] = 4, ['glasses_2'] = 9
+			},
+			female = {}
 		}
 	},
 
@@ -55,7 +67,8 @@ Config.paleto_electrician = {
 
 	PromotionThreshold = {
 		grade1 = 4000,
-		grade2 = 50000,
+		grade2 = 40000,
+		grade3 = 100000,
 	}
 }
 

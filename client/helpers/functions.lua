@@ -27,13 +27,16 @@ function start_work(job_name, needed_points)
 		return ESX.ShowNotification("You need more " .. difference .. " work point(s) to work here")
 	end
 
-	ESX.ShowNotification("You started your shift")
 	local job_specific_points = get_player_work_experience('job', job_name)
 	local skill_points = get_skill_points_for_job(job_name)
-	TriggerServerEvent('toggleJob:paletoLives', job_name, (job_specific_points + skill_points))
+	local promotion_points = job_specific_points + skill_points
+	ESX.ShowNotification("You started your shift (" .. promotion_points .. ")")
+	TriggerServerEvent('toggleJob:paletoLives', job_name, promotion_points)
+	return promotion_points
 end
 
 function get_skill_points_for_job(job_name)
+	-- ESX.ShowNotification("get_skill_points_for_job (" .. job_name .. ")")
 	if job_name == 'electrician' then return get_player_skill_experience('electrical_engineering') end
 	if job_name == 'factory_helper' then return get_player_skill_experience('information_technology') end
 	if job_name == 'police_intern' then return get_player_skill_experience('law') end
@@ -61,10 +64,12 @@ function get_player_work_experience(query, param)
 end
 
 function get_player_skill_experience(skill)
-	local player_skill_experience, retval = {}, 0
+	-- ESX.ShowNotification("get_player_skill_experience (" .. skill .. ")")
+	local player_skill_experience = false
+	local retval = 0
 
 	ESX.TriggerServerCallback("getSkillExperience:paletoLives", function(skill_experience)
-		player_skill_experience = skill_experience
+		player_skill_experience = json.decode(skill_experience)
 	end)
 
 	while not player_skill_experience do Wait(100) end
@@ -74,7 +79,6 @@ function get_player_skill_experience(skill)
 			retval = player_skill_experience[i].skill_points
 		end
 	end
-
 	return retval
 end
 

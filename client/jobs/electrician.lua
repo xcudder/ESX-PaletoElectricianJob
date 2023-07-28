@@ -39,8 +39,10 @@ AddEventHandler('esx:setJob', function(job)
 			RemoveBlip(random_work_position_blip)
 		end
 	else
-		PlayerData.electrician_points = get_player_work_experience('job', PlayerData.job.name)
-		PlayerData.electrician_points = PlayerData.electrician_points + get_player_skill_experience('electrical_engineering')
+		if not PlayerData.electrician_points then
+			PlayerData.electrician_points = get_player_work_experience('job', PlayerData.job.name)
+			PlayerData.electrician_points = PlayerData.electrician_points + get_player_skill_experience('electrical_engineering')
+		end
 
 		putUniformOn(local_cfg.Clothes[job.grade + 1])
 		generate_new_work_order(local_cfg, random_work_position_blip, function(new_work, new_blip)
@@ -72,7 +74,9 @@ Citizen.CreateThread(function()
 		 if entity_close_enough(quest_giver) then
 			if PlayerData.job and PlayerData.job.name ~= 'electrician' then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to start the job")
-				if(IsControlJustReleased(1, 38))then start_work('electrician', 150) end
+				if(IsControlJustReleased(1, 38))then
+					PlayerData.electrician_points = start_work('electrician', 150)
+				end
 			else
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to stop the job")
 				if(IsControlJustReleased(1, 38))then stop_work('electrician', points_worked_on, 4) end
@@ -100,7 +104,8 @@ function electrician_working()
 	isWorking = true
 	local multiplier = 1
 	if PlayerData.electrician_points >= Config.paleto_electrician.PromotionThreshold.grade1 then multiplier = 2 end
-	if PlayerData.electrician_points >= Config.paleto_electrician.PromotionThreshold.grade2 then multiplier = 4 end
+	if PlayerData.electrician_points >= Config.paleto_electrician.PromotionThreshold.grade2 then multiplier = 3 end
+	if PlayerData.electrician_points >= Config.paleto_electrician.PromotionThreshold.grade3 then multiplier = 4 end
 	Citizen.CreateThread(function()
 		Citizen.Wait(10)
 		run_electrician_animation(random_work_position, PlayerData.electrician_points)

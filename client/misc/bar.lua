@@ -41,6 +41,8 @@ CreateThread(function()
 		if coordinates_close_enough(vector3(1122.151, -3146.637, -37.07), 12.0) then
 			ShakeGameplayCam('DRUNK_SHAKE', 0.5)
 			missionText("Enjoying the bar lowers stress", 1)
+		else
+			StopGameplayCamShaking()
 		end
 	end
 end)
